@@ -261,7 +261,32 @@ cars.map((car,index)=>`
 ${car.sell-car.buy-car.costs} ₽
 </p>
 
+<hr>
 
+<h3>
+История расходов
+</h3>
+
+
+${
+(car.expenses || []).map(e=>`
+
+<div class="expense">
+
+<b>${e.name}</b>
+
+<br>
+
+Сумма: ${e.sum}
+
+<br>
+
+Дата: ${e.date}
+
+</div>
+
+`).join("")
+}
 <p>
 <b>Статус:</b>
 ${car.status}
@@ -483,21 +508,48 @@ placeholder="Сумма">
 
 `;
 
-}function addExpense(index){
+}ffunction addExpense(index){
 
 let cars =
 JSON.parse(localStorage.getItem("cars")) || [];
 
-let sum = Number(
-document.getElementById("expense").value
-);
+
+let name =
+document.getElementById("expenseName").value;
+
+
+let sum =
+Number(document.getElementById("expense").value);
+
+
+if(!name || !sum){
+alert("Заполни расход и сумму");
+return;
+}
+
+
+if(!cars[index].expenses){
+cars[index].expenses=[];
+}
+
+
+cars[index].expenses.push({
+
+name:name,
+sum:sum,
+date:new Date().toLocaleDateString()
+
+});
+
 
 cars[index].costs += sum;
+
 
 localStorage.setItem(
 "cars",
 JSON.stringify(cars)
 );
+
 
 openCar(index);
 
