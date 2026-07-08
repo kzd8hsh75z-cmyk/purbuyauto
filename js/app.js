@@ -1567,6 +1567,8 @@ JSON.stringify(deals)
 
 showDeals();
 
+}
+
 function createDealFromRequest(index){
 
 const requests =
