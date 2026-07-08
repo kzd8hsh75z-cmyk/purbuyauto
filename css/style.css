@@ -152,4 +152,14 @@ textarea{
     border-radius:12px;
     border:none;
     font-size:16px;
+}.dashboard hr{
+    border:0;
+    height:1px;
+    background:#23344d;
+    margin:25px 0;
+}
+
+.dashboard p{
+    font-size:18px;
+    margin:12px 0;
 }

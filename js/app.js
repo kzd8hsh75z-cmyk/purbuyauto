@@ -126,6 +126,9 @@ showRequests();
     <button onclick="deleteRequest(${index})">
         🗑 Удалить
     </button>
+    <button onclick="openClient(${index})">
+    👤 Клиент
+</button>
 </div>
                 `).join("")}
             </div>
@@ -158,4 +161,49 @@ showRequests();
     );
 
     showRequests();
+}function openClient(index){
+
+    const requests = JSON.parse(localStorage.getItem("requests")) || [];
+
+    const request = requests[index];
+
+    app.innerHTML = `
+    <div class="dashboard">
+
+        <h1>👤 Клиент</h1>
+
+        <p><b>Имя:</b> ${request.client}</p>
+
+        <p><b>Телефон:</b> ${request.phone}</p>
+
+        <p><b>Автомобиль:</b> ${request.car}</p>
+
+        <p><b>Год:</b> ${request.year}</p>
+
+        <p><b>Пробег:</b> ${request.mileage}</p>
+
+        <p><b>Бюджет:</b> ${request.price}</p>
+
+        <p><b>Тип:</b> ${request.type}</p>
+
+        <hr>
+
+        <h2>История</h2>
+
+        <p>
+        Создана заявка:
+        ${request.date || "Сегодня"}
+        </p>
+
+        <p>
+        Статус:
+        ${request.status}
+        </p>
+
+        <button onclick="showRequests()">
+        Назад к заявкам
+        </button>
+
+    </div>
+    `;
 }
