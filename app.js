@@ -1,6 +1,6 @@
 const app = document.getElementById("app");
 
-ddocument.querySelector(".boss")?.addEventListener("click", () => {
+document.querySelector(".boss")?.addEventListener("click", () => {
     app.innerHTML = `
         <div class="dashboard">
             <h1>Панель руководителя</h1>
