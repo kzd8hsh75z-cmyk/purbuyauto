@@ -35,7 +35,7 @@ document.querySelector(".worker").addEventListener("click", () => {
                 <div>✅ <b>2</b><span>Сделки</span></div>
             </div>
 
-            <button>Мои задачи</button>
+            <button onclick="showTasks()">📋 Мои задачи</button>
             <button>Заявки</button>
             <button>Автоподбор</button>
             <button>Привоз</button>
@@ -70,4 +70,246 @@ document.querySelector(".worker").addEventListener("click", () => {
 
 function saveRequest() {
     alert("Заявка сохранена. Скоро подключим базу данных.");
+}
+function showTasks(){
+
+const tasks =
+JSON.parse(localStorage.getItem("tasks")) || [];
+
+
+app.innerHTML = `
+
+<div class="dashboard">
+
+<h1>
+📋 Задачи
+</h1>
+
+
+<button onclick="addTask()">
+➕ Новая задача
+</button>
+
+
+<div class="request-list">
+
+
+${
+tasks.length === 0 ?
+
+"<p>Задач пока нет</p>"
+
+:
+
+tasks.map((task,index)=>`
+
+<div class="request-card">
+
+
+<h3>
+${task.title}
+</h3>
+
+
+<p>
+👤 ${task.employee}
+</p>
+
+
+<p>
+🚗 ${task.car}
+</p>
+
+
+<p>
+📞 ${task.type}
+</p>
+
+
+<p>
+Статус:
+${task.status}
+</p>
+
+
+<button onclick="completeTask(${index})">
+✅ Выполнено
+</button>
+
+
+<button onclick="deleteTask(${index})">
+🗑 Удалить
+</button>
+
+
+</div>
+
+
+`).join("")
+
+}
+
+
+</div>
+
+
+<button onclick="location.reload()">
+Назад
+</button>
+
+
+</div>
+
+`;
+
+}
+function addTask(){
+
+const employees =
+JSON.parse(localStorage.getItem("employees")) || [];
+
+
+const options =
+employees.map(emp=>`
+
+<option>
+${emp.name}
+</option>
+
+`).join("");
+
+
+app.innerHTML=`
+
+<div class="dashboard">
+
+<h1>
+➕ Новая задача
+</h1>
+
+
+<input id="taskTitle"
+placeholder="Что сделать">
+
+
+<input id="taskCar"
+placeholder="Автомобиль">
+
+
+<select id="taskEmployee">
+
+<option>
+Без сотрудника
+</option>
+
+${options}
+
+</select>
+
+
+<select id="taskType">
+
+<option>
+📞 Звонок
+</option>
+
+<option>
+🔧 Осмотр
+</option>
+
+<option>
+💰 Продажа
+</option>
+
+</select>
+
+
+<button onclick="saveTask()">
+Создать
+</button>
+
+
+<button onclick="showTasks()">
+Назад
+</button>
+
+
+</div>
+
+`;
+
+}
+function saveTask(){
+
+const tasks =
+JSON.parse(localStorage.getItem("tasks")) || [];
+
+
+tasks.push({
+
+title:
+document.getElementById("taskTitle").value,
+
+car:
+document.getElementById("taskCar").value,
+
+employee:
+document.getElementById("taskEmployee").value,
+
+type:
+document.getElementById("taskType").value,
+
+status:
+"Новая",
+
+date:
+new Date().toLocaleDateString()
+
+});
+
+
+localStorage.setItem(
+"tasks",
+JSON.stringify(tasks)
+);
+
+
+showTasks();
+
+}
+function completeTask(index){
+
+let tasks =
+JSON.parse(localStorage.getItem("tasks")) || [];
+
+
+tasks[index].status="Выполнено";
+
+
+localStorage.setItem(
+"tasks",
+JSON.stringify(tasks)
+);
+
+
+showTasks();
+
+}
+function deleteTask(index){
+
+let tasks =
+JSON.parse(localStorage.getItem("tasks")) || [];
+
+
+tasks.splice(index,1);
+
+
+localStorage.setItem(
+"tasks",
+JSON.stringify(tasks)
+);
+
+
+showTasks();
+
 }
