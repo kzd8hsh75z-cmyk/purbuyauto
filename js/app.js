@@ -114,7 +114,7 @@ PurBuyAuto X
 </button>
 
 
-<button onclick="showHaraba()">
+<button>
 Haraba
 </button>
 
@@ -574,6 +574,7 @@ ${car.vin || "Не указан"}
 ${car.dateBuy || "Не указана"}
 </p>
 
+<p>
 📌 Добавлен в систему:
 ${car.dateCreated || "Сегодня"}
 </p>
