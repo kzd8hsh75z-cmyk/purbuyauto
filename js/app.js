@@ -8,6 +8,15 @@ localStorage.getItem("cars")
 }
 
 
+function getTasks(){
+
+return JSON.parse(
+localStorage.getItem("tasks")
+) || [];
+
+}
+
+
 function getEmployees(){
 
 return JSON.parse(
@@ -146,7 +155,9 @@ PurBuyAuto X
 <button onclick="showClients()">
 👤 Клиенты
 </button>
-
+<button onclick="showTasks()">
+📋 Задачи
+</button>
 <button>
 Haraba
 </button>
@@ -170,12 +181,10 @@ document.querySelector(".worker")?.addEventListener("click", () => {
                 <div>🚘 <b>3</b><span>Осмотры</span></div>
                 <div>✅ <b>2</b><span>Сделки</span></div>
                 </div>
-                <button>📋 Мои задачи</button>
-            <button onclick="showRequests()">
-📋 Заявки
-</button>
-            <button>Автоподбор</button>
-            <button>Привоз</button>
+                <button onclick="showTasks()">📋 Мои задачи</button>
+                <button onclick="showRequests()">📋 Заявки</button>
+                <button>Автоподбор</button>
+                <button>Привоз</button>
         </div>
     `;
 });function showNewRequest() {
@@ -368,8 +377,8 @@ function showRequests() {
     <button onclick="deleteRequest(${index})">
         🗑 Удалить
     </button>
-    <button onclick="openClient(${index})">
-    👤 Клиент
+    <button onclick="openClientCardByRequest(${index})">
+👤 Клиент
 </button>
 <button onclick="createDealFromRequest(${index})">
 🤝 Создать сделку
@@ -398,18 +407,29 @@ JSON.stringify(requests)
 );
 
 showRequests();
-}function changeStatus(index, status){
+function changeStatus(index, status){
 
-    let requests = JSON.parse(localStorage.getItem("requests")) || [];
+let requests =
+JSON.parse(localStorage.getItem("requests")) || [];
 
-    requests[index].status = status;
 
-    localStorage.setItem(
-        "requests",
-        JSON.stringify(requests)
-    );
+if(!requests[index]){
+return;
+}
 
-    showRequests();
+
+requests[index].status = status;
+
+
+localStorage.setItem(
+"requests",
+JSON.stringify(requests)
+);
+
+
+showRequests();
+
+}
 }function openClient(index){
 
     const requests = JSON.parse(localStorage.getItem("requests")) || [];
@@ -2199,5 +2219,256 @@ JSON.stringify(clients)
 
 
 openClientCard(index);
+
+}function showTasks(){
+
+const tasks=getTasks();
+
+
+app.innerHTML=`
+
+<div class="dashboard">
+
+<h1>
+📋 Задачи
+</h1>
+
+
+<button onclick="addTask()">
+➕ Новая задача
+</button>
+
+
+<div class="request-list">
+
+
+${
+tasks.length===0
+
+?
+
+"<p>Задач пока нет</p>"
+
+:
+
+tasks.map((task,index)=>`
+
+<div class="request-card">
+
+<h3>
+${task.title}
+</h3>
+
+
+<p>
+👤 Клиент:
+${task.client}
+</p>
+
+
+<p>
+Ответственный:
+${task.employee}
+</p>
+
+
+<p>
+📅 ${task.date}
+</p>
+
+
+<p>
+Статус:
+${task.status}
+</p>
+
+
+<button onclick="completeTask(${index})">
+✅ Выполнено
+</button>
+
+<button onclick="deleteTask(${index})">
+🗑 Удалить
+</button>
+
+</div>
+
+`).join("")
+
+}
+
+
+</div>
+
+
+<button onclick="location.reload()">
+Назад
+</button>
+
+
+</div>
+
+`;
+
+}function addTask(){
+
+const employees=getEmployees();
+
+
+app.innerHTML=`
+
+<div class="dashboard">
+
+<h1>
+➕ Новая задача
+</h1>
+
+
+<input id="taskTitle"
+placeholder="Название задачи">
+
+
+<input id="taskClient"
+placeholder="Клиент">
+
+
+<select id="taskEmployee">
+
+${employees.map(e=>`
+
+<option>
+${e.name}
+</option>
+
+`).join("")}
+
+</select>
+
+
+<input id="taskDate"
+placeholder="Дата контакта">
+
+
+<button onclick="saveTask()">
+Сохранить
+</button>
+
+
+<button onclick="showTasks()">
+Назад
+</button>
+
+
+</div>
+
+`;
+
+}function saveTask(){
+
+const tasks=getTasks();
+const title =
+document.getElementById("taskTitle").value;
+
+
+if(!title){
+
+alert("Введите название задачи");
+
+return;
+
+}
+
+tasks.push({
+
+id:Date.now(),
+
+title:title,
+
+client:
+document.getElementById("taskClient").value,
+
+employee:
+document.getElementById("taskEmployee").value,
+
+date:
+document.getElementById("taskDate").value,
+
+status:
+"Новая"
+
+});
+
+
+localStorage.setItem(
+"tasks",
+JSON.stringify(tasks)
+);
+
+
+showTasks();
+
+}
+
+function completeTask(index){
+
+const tasks = getTasks();
+
+
+if(!tasks[index]){
+return;
+}
+
+
+tasks[index].status = "Выполнено";
+
+
+localStorage.setItem(
+"tasks",
+JSON.stringify(tasks)
+);
+
+
+showTasks();
+
+}function openClientCardByRequest(index){
+
+const requests =
+JSON.parse(localStorage.getItem("requests")) || [];
+
+const clients=getClients();
+
+
+const request=requests[index];
+
+
+const clientIndex =
+clients.findIndex(
+c=>c.id===request.clientId
+);
+
+
+if(clientIndex===-1){
+
+alert("Клиент не найден");
+
+return;
+
+}
+
+
+openClientCard(clientIndex);
+
+}function deleteTask(index){
+
+const tasks = getTasks();
+
+tasks.splice(index,1);
+
+localStorage.setItem(
+"tasks",
+JSON.stringify(tasks)
+);
+
+showTasks();
 
 }
