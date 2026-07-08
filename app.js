@@ -12,7 +12,9 @@ document.querySelector(".boss").addEventListener("click", () => {
                 <div>🌍 <b>8</b><span>Привоз</span></div>
                 <div>🤖 <b>AI</b><span>PurBuyAI</span></div>
             </div>
-
+<button onclick="showRequests()">
+📋 Все заявки
+</button>
             <button onclick="showNewRequest()">Новая заявка</button>
             <button onclick="showCars()">🚗 Автомобили</button>
             <button onclick="showFinance()">💰 Финансы</button>
@@ -69,7 +71,74 @@ document.querySelector(".worker").addEventListener("click", () => {
 }
 
 function saveRequest() {
-    alert("Заявка сохранена. Скоро подключим базу данных.");
+
+const inputs =
+document.querySelectorAll(".dashboard input");
+
+
+const select =
+document.querySelector(".dashboard select");
+
+
+const textarea =
+document.querySelector(".dashboard textarea");
+
+
+const requests =
+JSON.parse(localStorage.getItem("requests")) || [];
+
+
+const request = {
+
+id: requests.length + 1,
+
+date:
+new Date().toLocaleString("ru-RU"),
+
+client:
+inputs[0].value,
+
+phone:
+inputs[1].value,
+
+car:
+inputs[2].value,
+
+year:
+inputs[3].value,
+
+mileage:
+inputs[4].value,
+
+price:
+inputs[5].value,
+
+type:
+select.value,
+
+comment:
+textarea.value,
+
+status:
+"Новая"
+
+};
+
+
+requests.push(request);
+
+
+localStorage.setItem(
+"requests",
+JSON.stringify(requests)
+);
+
+
+alert("Заявка сохранена");
+
+
+location.reload();
+
 }
 function showTasks(){
 
@@ -243,7 +312,17 @@ function saveTask(){
 
 const tasks =
 JSON.parse(localStorage.getItem("tasks")) || [];
+const title =
+document.getElementById("taskTitle").value;
 
+
+if(!title){
+
+alert("Введите задачу");
+
+return;
+
+}
 
 tasks.push({
 
