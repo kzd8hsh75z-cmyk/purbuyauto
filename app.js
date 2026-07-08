@@ -1,6 +1,6 @@
 const app = document.getElementById("app");
 
-document.querySelector(".boss").addEventListener("click", () => {
+ddocument.querySelector(".boss")?.addEventListener("click", () => {
     app.innerHTML = `
         <div class="dashboard">
             <h1>Панель руководителя</h1>
@@ -11,20 +11,17 @@ document.querySelector(".boss").addEventListener("click", () => {
                 <div>🚗 <b>16</b><span>Выкуп</span></div>
                 <div>🌍 <b>8</b><span>Привоз</span></div>
                 <div>🤖 <b>AI</b><span>PurBuyAI</span></div>
-            </div>
-<button onclick="showRequests()">
-📋 Все заявки
-</button>
-            <button onclick="showNewRequest()">Новая заявка</button>
-            <button onclick="showCars()">🚗 Автомобили</button>
-            <button onclick="showFinance()">💰 Финансы</button>
-            <button onclick="showEmployees()">👥 Сотрудники</button>
-            <button>Haraba</button>
+                </div><button onclick="showRequests()">📋 Все заявки</button>
+                <button onclick="showNewRequest()">Новая заявка</button>
+                <button onclick="showCars()">🚗 Автомобили</button>
+                <button onclick="showFinance()">💰 Финансы</button>
+                <button onclick="showEmployees()">👥 Сотрудники</button>
+                <button>Haraba</button>
         </div>
     `;
 });
 
-document.querySelector(".worker").addEventListener("click", () => {
+document.querySelector(".worker")?.addEventListener("click", () => {
     app.innerHTML = `
         <div class="dashboard">
             <h1>Кабинет сотрудника</h1>
@@ -36,7 +33,6 @@ document.querySelector(".worker").addEventListener("click", () => {
                 <div>🚘 <b>3</b><span>Осмотры</span></div>
                 <div>✅ <b>2</b><span>Сделки</span></div>
             </div>
-
             <button onclick="showTasks()">📋 Мои задачи</button>
             <button>Заявки</button>
             <button>Автоподбор</button>
@@ -70,62 +66,99 @@ document.querySelector(".worker").addEventListener("click", () => {
     `;
 }
 
-function saveRequest() {
-
-const inputs =
-document.querySelectorAll(".dashboard input");
-
-
-const select =
-document.querySelector(".dashboard select");
-
-
-const textarea =
-document.querySelector(".dashboard textarea");
-
+function showRequests(){
 
 const requests =
 JSON.parse(localStorage.getItem("requests")) || [];
 
 
-const request = {
+app.innerHTML = `
 
-id: requests.length + 1,
+<div class="dashboard">
 
-date:
-new Date().toLocaleString("ru-RU"),
-
-client:
-inputs[0].value,
-
-phone:
-inputs[1].value,
-
-car:
-inputs[2].value,
-
-year:
-inputs[3].value,
-
-mileage:
-inputs[4].value,
-
-price:
-inputs[5].value,
-
-type:
-select.value,
-
-comment:
-textarea.value,
-
-status:
-"Новая"
-
-};
+<h1>
+📋 Все заявки
+</h1>
 
 
-requests.push(request);
+<button onclick="showNewRequest()">
+➕ Новая заявка
+</button>
+
+
+<div class="request-list">
+
+
+${
+requests.length === 0 ?
+
+"<p>Заявок пока нет</p>"
+
+:
+
+requests.map((request,index)=>`
+
+<div class="request-card">
+
+<h3>
+#${request.id} ${request.car}
+</h3>
+
+
+<p>
+👤 ${request.client}
+</p>
+
+
+<p>
+📞 ${request.phone}
+</p>
+
+
+<p>
+🚗 ${request.type}
+</p>
+
+
+<p>
+Статус:
+${request.status}
+</p>
+
+
+<button onclick="deleteRequest(${index})">
+🗑 Удалить
+</button>
+
+
+</div>
+
+
+`).join("")
+
+}
+
+
+</div>
+
+
+<button onclick="location.reload()">
+Назад
+</button>
+
+
+</div>
+
+`;
+
+}
+function deleteRequest(index){
+
+let requests =
+JSON.parse(localStorage.getItem("requests")) || [];
+
+
+requests.splice(index,1);
 
 
 localStorage.setItem(
@@ -134,12 +167,10 @@ JSON.stringify(requests)
 );
 
 
-alert("Заявка сохранена");
-
-
-location.reload();
+showRequests();
 
 }
+
 function showTasks(){
 
 const tasks =

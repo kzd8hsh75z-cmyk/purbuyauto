@@ -5,7 +5,7 @@ return Number(value || 0)
 .toLocaleString("ru-RU") + " ₽";
 
 }
-    document.querySelector(".boss").addEventListener("click", () => {
+    document.querySelector(".boss")?.addEventListener("click", () => {
 
 
 const requests =
@@ -125,7 +125,7 @@ Haraba
 
 });
 
-document.querySelector(".worker").addEventListener("click", () => {
+document.querySelector(".worker")?.addEventListener("click", () => {
     app.innerHTML = `
         <div class="dashboard">
             <h1>Кабинет сотрудника</h1>
@@ -136,9 +136,7 @@ document.querySelector(".worker").addEventListener("click", () => {
                 <div>📞 <b>5</b><span>Звонки</span></div>
                 <div>🚘 <b>3</b><span>Осмотры</span></div>
                 <div>✅ <b>2</b><span>Сделки</span></div>
-            </div>
-
-            <button>Мои задачи</button>
+            <button onclick="showTasks()">📋 Мои задачи</button>
             <button>Заявки</button>
             <button>Автоподбор</button>
             <button>Привоз</button>
@@ -215,8 +213,15 @@ localStorage.setItem(
 JSON.stringify(requests)
 );
 
+
+alert("Заявка сохранена");
+
 showRequests();
-}function showRequests() {
+
+}
+
+
+function showRequests() {
     const requests = JSON.parse(localStorage.getItem("requests")) || [];
 
     app.innerHTML = `
@@ -329,7 +334,11 @@ ${request.manager || "Не назначен"}
 
     </div>
     `;
-function addCar(){
+
+    }
+    
+    
+    function addCar(){
 
 const employees =
 JSON.parse(localStorage.getItem("employees")) || [];
@@ -417,90 +426,6 @@ ${employeeOptions}
 `;
 
 }
-
-}function addCar(){
-
-app.innerHTML=`
-const employees =
-JSON.parse(localStorage.getItem("employees")) || [];
-
-
-const employeeOptions =
-employees.map(emp=>`
-
-<option>
-${emp.name}
-</option>
-
-`).join("");
-
-<div class="dashboard">
-
-<h1>➕ Новый автомобиль</h1>
-
-
-<input id="brand" placeholder="Марка">
-
-<input id="model" placeholder="Модель">
-
-<input id="year" placeholder="Год">
-
-<input id="mileage" placeholder="Пробег">
-
-<input id="vin" placeholder="VIN номер">
-
-<input id="photo" placeholder="Ссылка на фото">
-
-<input id="dateBuy" placeholder="Дата покупки">
-
-<select id="manager">
-
-<option>
-Без ответственного
-</option>
-
-${employeeOptions}
-
-</select>
-
-<input id="city" placeholder="Город">
-
-<textarea id="comment" placeholder="Комментарий по автомобилю"></textarea>
-
-<input id="buy" placeholder="Цена покупки">
-
-<input id="costs" placeholder="Расходы">
-
-<input id="sell" placeholder="Цена продажи">
-
-
-<select id="status">
-
-<option>🔎 В поиске</option>
-<option>🟡 Куплен</option>
-<option>🔵 На подготовке</option>
-<option>🟢 В продаже</option>
-<option>⚫ Продан</option>
-
-</select>
-
-
-<button onclick="saveCar()">
-Сохранить
-</button>
-
-
-<button onclick="showCars()">
-Назад
-</button>
-
-
-</div>
-
-`;
-
-}
-
 
 
 function saveCar(){
