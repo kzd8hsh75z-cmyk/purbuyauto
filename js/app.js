@@ -109,12 +109,12 @@ PurBuyAuto X
 </button>
 
 
-<button>
-Сотрудники
+<button onclick="showEmployees()">
+👥 Сотрудники
 </button>
 
 
-<button>
+<button onclick="showHaraba()">
 Haraba
 </button>
 
@@ -901,5 +901,165 @@ ${money(car.sell-car.buy-car.costs)}
 </div>
 
 `;
+
+}function showEmployees(){
+
+const employees =
+JSON.parse(localStorage.getItem("employees")) || [];
+
+
+app.innerHTML = `
+
+<div class="dashboard">
+
+
+<h1>
+👥 Сотрудники
+</h1>
+
+
+<button onclick="addEmployee()">
+➕ Добавить сотрудника
+</button>
+
+
+<div class="request-list">
+
+
+${
+employees.length === 0 ?
+
+"<p>Сотрудников пока нет</p>"
+
+:
+
+employees.map((emp,index)=>`
+
+<div class="request-card">
+
+
+<h3>
+${emp.name}
+</h3>
+
+
+<p>
+Роль:
+${emp.role}
+</p>
+
+
+<p>
+Телефон:
+${emp.phone}
+</p>
+
+
+<button onclick="deleteEmployee(${index})">
+🗑 Удалить
+</button>
+
+
+</div>
+
+
+`).join("")
+
+}
+
+
+</div>
+
+
+<button onclick="location.reload()">
+Назад
+</button>
+
+
+</div>
+
+`;
+
+}function addEmployee(){
+
+app.innerHTML = `
+
+<div class="dashboard">
+
+<h1>
+➕ Новый сотрудник
+</h1>
+
+
+<input id="empName"
+placeholder="Имя">
+
+
+<input id="empRole"
+placeholder="Должность">
+
+
+<input id="empPhone"
+placeholder="Телефон">
+
+
+<button onclick="saveEmployee()">
+Сохранить
+</button>
+
+
+<button onclick="showEmployees()">
+Назад
+</button>
+
+
+</div>
+
+`;
+
+}function saveEmployee(){
+
+const employees =
+JSON.parse(localStorage.getItem("employees")) || [];
+
+
+employees.push({
+
+name:
+document.getElementById("empName").value,
+
+role:
+document.getElementById("empRole").value,
+
+phone:
+document.getElementById("empPhone").value
+
+});
+
+
+localStorage.setItem(
+"employees",
+JSON.stringify(employees)
+);
+
+
+showEmployees();
+
+}function deleteEmployee(index){
+
+let employees =
+JSON.parse(localStorage.getItem("employees")) || [];
+
+
+employees.splice(index,1);
+
+
+localStorage.setItem(
+"employees",
+JSON.stringify(employees)
+);
+
+
+showEmployees();
 
 }
