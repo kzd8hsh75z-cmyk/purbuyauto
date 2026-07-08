@@ -611,7 +611,15 @@ app.innerHTML = `
 <h2>
 Прибыль:
 ${car.sell - car.buy - car.costs} ₽
-</h2>
+<h2>➕ Добавить расход</h2>
+
+<input id="expense"
+placeholder="Например: ремонт">
+
+
+<button onclick="addExpense(${index})">
+Добавить расход
+</button>
 
 
 <button onclick="showCars()">
@@ -621,5 +629,33 @@ ${car.sell - car.buy - car.costs} ₽
 </div>
 
 `;
+
+}function addExpense(index){
+
+const cars =
+JSON.parse(localStorage.getItem("cars")) || [];
+
+
+const value =
+Number(document.getElementById("expense").value);
+
+
+if(!value){
+alert("Введите сумму расхода");
+return;
+}
+
+
+cars[index].costs =
+Number(cars[index].costs) + value;
+
+
+localStorage.setItem(
+"cars",
+JSON.stringify(cars)
+);
+
+
+openCar(index);
 
 }
