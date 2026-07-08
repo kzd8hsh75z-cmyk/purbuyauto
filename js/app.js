@@ -1334,6 +1334,10 @@ ${deal.manager}
 ${deal.status}
 </p>
 
+<p>
+📅 Дата:
+${deal.date}
+</p>
 
 <button onclick="deleteDeal(${index})">
 🗑 Удалить
@@ -1564,6 +1568,19 @@ JSON.stringify(deals)
 showDeals();
 
 }function createDealFromRequest(index){
+    const exists =
+deals.find(
+deal => deal.requestId === request.id
+);
+
+
+if(exists){
+
+alert("По этой заявке уже существует сделка");
+
+return;
+
+}
 
 const requests =
 JSON.parse(localStorage.getItem("requests")) || [];
@@ -1606,7 +1623,7 @@ manager:
 request.manager || "Без менеджера",
 
 status:
-"В работе",
+"Новая",
 
 date:
 new Date().toLocaleDateString()
