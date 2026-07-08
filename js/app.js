@@ -161,7 +161,7 @@ document.querySelector(".worker")?.addEventListener("click", () => {
                 <div>🚘 <b>3</b><span>Осмотры</span></div>
                 <div>✅ <b>2</b><span>Сделки</span></div>
                 </div>
-                <button onclick="showTasks()">📋 Мои задачи</button>
+                <button>📋 Мои задачи</button>
             <button onclick="showRequests()">
 📋 Заявки
 </button>
@@ -1567,8 +1567,20 @@ JSON.stringify(deals)
 
 showDeals();
 
-}function createDealFromRequest(index){
-    const exists =
+function createDealFromRequest(index){
+
+const requests =
+JSON.parse(localStorage.getItem("requests")) || [];
+
+
+const request = requests[index];
+
+
+const deals =
+JSON.parse(localStorage.getItem("deals")) || [];
+
+
+const exists =
 deals.find(
 deal => deal.requestId === request.id
 );
@@ -1581,16 +1593,6 @@ alert("По этой заявке уже существует сделка");
 return;
 
 }
-
-const requests =
-JSON.parse(localStorage.getItem("requests")) || [];
-
-
-const request = requests[index];
-
-
-const deals =
-JSON.parse(localStorage.getItem("deals")) || [];
 
 
 deals.push({
