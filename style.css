@@ -103,4 +103,17 @@ button{
 .stats span{
     color:#9da8b4;
     font-size:14px;
+}select,
+textarea{
+    width:100%;
+    border:none;
+    border-radius:12px;
+    padding:18px;
+    font-size:18px;
+    margin-bottom:15px;
+}
+
+textarea{
+    min-height:120px;
+    resize:none;
 }

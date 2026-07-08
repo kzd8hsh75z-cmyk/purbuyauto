@@ -13,7 +13,7 @@ document.querySelector(".boss").addEventListener("click", () => {
                 <div>🤖 <b>AI</b><span>PurBuyAI</span></div>
             </div>
 
-            <button>Новая заявка</button>
+            <button onclick="showNewRequest()">Новая заявка</button>
             <button>Автомобили</button>
             <button>Финансы</button>
             <button>Сотрудники</button>
@@ -41,4 +41,33 @@ document.querySelector(".worker").addEventListener("click", () => {
             <button>Привоз</button>
         </div>
     `;
-});
+});function showNewRequest() {
+    app.innerHTML = `
+        <div class="dashboard">
+            <h1>Новая заявка</h1>
+            <p>Создание заявки PurBuyAuto X</p>
+
+            <input placeholder="Имя клиента">
+            <input placeholder="Телефон клиента">
+            <input placeholder="Марка и модель авто">
+            <input placeholder="Год выпуска">
+            <input placeholder="Пробег">
+            <input placeholder="Желаемая цена">
+
+            <select>
+                <option>Выкуп</option>
+                <option>Автоподбор</option>
+                <option>Привоз из-за границы</option>
+            </select>
+
+            <textarea placeholder="Комментарий"></textarea>
+
+            <button onclick="saveRequest()">Сохранить заявку</button>
+            <button class="dark" onclick="location.reload()">Назад</button>
+        </div>
+    `;
+}
+
+function saveRequest() {
+    alert("Заявка сохранена. Скоро подключим базу данных.");
+}
