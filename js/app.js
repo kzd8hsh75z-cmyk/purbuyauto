@@ -21,7 +21,9 @@ document.querySelector(".boss").addEventListener("click", () => {
             <button onclick="showNewRequest()">Новая заявка</button>
             <button onclick="showRequests()">Все заявки</button>
             <button onclick="showCars()">🚗 Автомобили</button>
-            <button>Финансы</button>
+            <button onclick="showFinance()">
+💰 Финансы
+</button>
             <button>Сотрудники</button>
             <button>Haraba</button>
         </div>
@@ -665,5 +667,144 @@ JSON.stringify(cars)
 
 showCars();
 }
+
+}function showFinance(){
+
+const cars =
+JSON.parse(localStorage.getItem("cars")) || [];
+
+
+let totalBuy = 0;
+let totalCosts = 0;
+let totalSell = 0;
+
+
+cars.forEach(car=>{
+
+totalBuy += Number(car.buy) || 0;
+
+totalCosts += Number(car.costs) || 0;
+
+totalSell += Number(car.sell) || 0;
+
+});
+
+
+const profit =
+totalSell - totalBuy - totalCosts;
+
+
+
+app.innerHTML = `
+
+<div class="dashboard">
+
+
+<h1>
+💰 Финансы PurBuyAuto X
+</h1>
+
+
+<div class="stats">
+
+
+<div>
+🚗
+<b>${cars.length}</b>
+<span>
+Автомобилей
+</span>
+</div>
+
+
+<div>
+💵
+<b>${money(totalBuy)}</b>
+<span>
+Вложено
+</span>
+</div>
+
+
+<div>
+🔧
+<b>${money(totalCosts)}</b>
+<span>
+Расходы
+</span>
+</div>
+
+
+<div>
+📈
+<b>${money(profit)}</b>
+<span>
+Прибыль
+</span>
+</div>
+
+
+</div>
+
+
+
+<h2>
+Автомобили
+</h2>
+
+
+${
+
+cars.map(car=>`
+
+<div class="request-card">
+
+
+<h3>
+${car.brand} ${car.model}
+</h3>
+
+
+<p>
+Покупка:
+${money(car.buy)}
+</p>
+
+
+<p>
+Расходы:
+${money(car.costs)}
+</p>
+
+
+<p>
+Продажа:
+${money(car.sell)}
+</p>
+
+
+<p>
+Прибыль:
+${money(car.sell-car.buy-car.costs)}
+</p>
+
+
+</div>
+
+
+`).join("")
+
+}
+
+
+
+<button onclick="location.reload()">
+Назад
+</button>
+
+
+</div>
+
+`;
 
 }
