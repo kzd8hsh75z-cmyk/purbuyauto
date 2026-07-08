@@ -843,8 +843,7 @@ ${e.date}
 
 function addExpense(index){
 
-const cars =
-JSON.parse(localStorage.getItem("cars")) || [];
+const cars = getCars();
 
 
 const name =
@@ -895,8 +894,7 @@ openCar(index);
 }
 function deleteCar(index){
 
-let cars =
-JSON.parse(localStorage.getItem("cars")) || [];
+let cars = getCars();
 
 if(confirm("Удалить этот автомобиль?")){
 
