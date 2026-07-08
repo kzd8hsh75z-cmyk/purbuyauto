@@ -426,6 +426,30 @@ app.innerHTML = `
 <p>Год: ${car.year}</p>
 
 <p>
+🛣 Пробег:
+${car.mileage || "Не указан"} км
+</p>
+
+<p>
+🔢 VIN:
+${car.vin || "Не указан"}
+</p>
+
+
+${
+car.photo ?
+
+`
+<img src="${car.photo}" class="car-photo">
+`
+
+:
+
+"<p>📸 Фото не добавлено</p>"
+
+}
+
+<p>
 Покупка:
 ${car.buy} ₽
 </p>

@@ -162,4 +162,16 @@ textarea{
 .dashboard p{
     font-size:18px;
     margin:12px 0;
+}.car-photo{
+
+width:100%;
+
+max-width:500px;
+
+border-radius:20px;
+
+margin:20px 0;
+
+object-fit:cover;
+
 }
