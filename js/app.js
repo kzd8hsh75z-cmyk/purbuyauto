@@ -477,5 +477,104 @@ JSON.stringify(cars)
 
 openCar(index);
 
+}function openCar(index){
+
+const cars = JSON.parse(localStorage.getItem("cars")) || [];
+
+const car = cars[index];
+
+
+app.innerHTML = `
+
+<div class="dashboard">
+
+<h1>
+🚗 ${car.brand} ${car.model}
+</h1>
+
+<p>
+Год выпуска: ${car.year}
+</p>
+
+
+<div class="request-card">
+
+<h2>💰 Финансы</h2>
+
+
+<p>
+Цена покупки:
+${car.buy} ₽
+</p>
+
+
+<p>
+Расходы:
+${car.costs} ₽
+</p>
+
+
+<p>
+Цена продажи:
+${car.sell} ₽
+</p>
+
+
+<h2>
+Прибыль:
+${car.sell - car.buy - car.costs} ₽
+</h2>
+
+
+</div>
+
+
+<div class="request-card">
+
+<h2>➕ Добавить расход</h2>
+
+
+<input id="expense"
+placeholder="Например: ремонт">
+
+
+<button onclick="addExpense(${index})">
+Добавить
+</button>
+
+
+</div>
+
+
+<button onclick="showCars()">
+Назад
+</button>
+
+
+</div>
+
+`;
+
+}function addExpense(index){
+
+const cars = JSON.parse(localStorage.getItem("cars")) || [];
+
+
+const value = Number(
+document.getElementById("expense").value
+);
+
+
+cars[index].costs += value;
+
+
+localStorage.setItem(
+"cars",
+JSON.stringify(cars)
+);
+
+
+openCar(index);
+
 }
 }
