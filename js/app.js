@@ -6,6 +6,16 @@ localStorage.getItem("cars")
 ) || [];
 
 }
+
+
+function getEmployees(){
+
+return JSON.parse(
+localStorage.getItem("employees")
+) || [];
+
+
+}
 function money(value){
 
 return Number(value) 
@@ -119,6 +129,9 @@ PurBuyAuto X
 💰 Финансы
 </button>
 
+<button onclick="showDeals()">
+🤝 Сделки
+</button>
 
 <button onclick="showEmployees()">
 👥 Сотрудники
@@ -157,8 +170,7 @@ document.querySelector(".worker")?.addEventListener("click", () => {
         </div>
     `;
 });function showNewRequest() {
-    const employees =
-JSON.parse(localStorage.getItem("employees")) || [];
+    const employees = getEmployees();
 
 
 const employeeOptions =
@@ -540,8 +552,7 @@ ${e.date}
 
 function addCar(){
 
-const employees =
-JSON.parse(localStorage.getItem("employees")) || [];
+const employees = getEmployees();
 
 
 const employeeOptions =
@@ -910,8 +921,7 @@ showCars();
 
 }function showFinance(){
 
-const cars =
-JSON.parse(localStorage.getItem("cars")) || [];
+const cars = getCars();
 
 
 let totalBuy = 0;
@@ -1061,8 +1071,7 @@ ${car.sell ? money(car.sell - car.buy - car.costs) : "Не продан"}
 
 }function showEmployees(){
 
-const employees =
-JSON.parse(localStorage.getItem("employees")) || [];
+const employees = getEmployees();
 
 
 app.innerHTML = `
@@ -1176,8 +1185,7 @@ placeholder="Телефон">
 
 }function saveEmployee(){
 
-const employees =
-JSON.parse(localStorage.getItem("employees")) || [];
+const employees = getEmployees();
 
 if(!document.getElementById("empName").value){
 
@@ -1210,8 +1218,7 @@ showEmployees();
 
 }function deleteEmployee(index){
 
-let employees =
-JSON.parse(localStorage.getItem("employees")) || [];
+let employees = getEmployees();
 
 
 if(!confirm("Удалить сотрудника?")){
@@ -1229,5 +1236,288 @@ JSON.stringify(employees)
 
 
 showEmployees();
+
+}function showDeals(){
+
+const deals =
+JSON.parse(localStorage.getItem("deals")) || [];
+
+
+app.innerHTML = `
+
+<div class="dashboard">
+
+<h1>
+🤝 Сделки PurBuyAuto X
+</h1>
+
+
+<button onclick="addDeal()">
+➕ Новая сделка
+</button>
+
+
+<div class="request-list">
+
+
+${
+deals.length === 0 ?
+
+"<p>Сделок пока нет</p>"
+
+:
+
+deals.map((deal,index)=>`
+
+<div class="request-card">
+
+
+<h3>
+#${deal.id}
+${deal.client}
+</h3>
+
+
+<p>
+🚗 Авто:
+${deal.car}
+</p>
+
+
+<p>
+💰 Покупка:
+${money(deal.buyPrice)}
+</p>
+
+
+<p>
+💵 Продажа:
+${money(deal.sellPrice)}
+</p>
+
+
+<p>
+📈 Прибыль:
+${money(deal.profit)}
+</p>
+
+
+<p>
+👤 Менеджер:
+${deal.manager}
+</p>
+
+
+<p>
+Статус:
+${deal.status}
+</p>
+
+
+<button onclick="deleteDeal(${index})">
+🗑 Удалить
+</button>
+
+
+</div>
+
+
+`).join("")
+
+}
+
+
+</div>
+
+
+<button onclick="location.reload()">
+Назад
+</button>
+
+
+</div>
+
+`;
+
+}
+function addDeal(){
+
+const employees = getEmployees();
+
+
+const employeeOptions =
+employees.map(emp=>`
+
+<option>
+${emp.name}
+</option>
+
+`).join("");
+
+
+app.innerHTML=`
+
+<div class="dashboard">
+
+<h1>
+➕ Новая сделка
+</h1>
+
+
+<input id="dealClient"
+placeholder="Клиент">
+
+
+<input id="dealCar"
+placeholder="Автомобиль">
+
+
+<input id="dealBuy"
+placeholder="Цена покупки">
+
+
+<input id="dealSell"
+placeholder="Цена продажи">
+
+
+<select id="dealManager">
+
+<option>
+Без менеджера
+</option>
+
+${employeeOptions}
+
+</select>
+
+
+<select id="dealStatus">
+
+<option>
+В работе
+</option>
+
+<option>
+Завершена
+</option>
+
+<option>
+Отказ
+</option>
+
+</select>
+
+
+<button onclick="saveDeal()">
+Создать сделку
+</button>
+
+
+<button onclick="showDeals()">
+Назад
+</button>
+
+
+</div>
+
+`;
+
+}function saveDeal(){
+
+const deals =
+JSON.parse(localStorage.getItem("deals")) || [];
+
+
+const buy =
+Number(document.getElementById("dealBuy").value);
+
+
+const sell =
+Number(document.getElementById("dealSell").value);
+const client =
+document.getElementById("dealClient").value;
+
+
+const car =
+document.getElementById("dealCar").value;
+
+
+if(!client || !car || !buy){
+
+alert("Заполните клиента, автомобиль и цену покупки");
+
+return;
+
+}
+if(sell && sell < buy){
+
+alert("Цена продажи не может быть ниже покупки");
+
+return;
+
+}
+
+
+deals.push({
+
+id:
+Date.now(),
+
+client: client,
+
+car: car,
+
+buyPrice:
+buy,
+
+sellPrice:
+sell,
+
+profit:
+sell-buy,
+
+
+manager:
+document.getElementById("dealManager").value,
+
+status:
+document.getElementById("dealStatus").value,
+
+date:
+new Date().toLocaleDateString()
+
+});
+
+
+localStorage.setItem(
+"deals",
+JSON.stringify(deals)
+);
+
+
+showDeals();
+
+}
+function deleteDeal(index){
+
+let deals =
+JSON.parse(localStorage.getItem("deals")) || [];
+
+
+if(!confirm("Удалить сделку?")){
+return;
+}
+
+
+deals.splice(index,1);
+
+
+localStorage.setItem(
+"deals",
+JSON.stringify(deals)
+);
+
+
+showDeals();
 
 }
