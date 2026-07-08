@@ -1,4 +1,11 @@
 const app = document.getElementById("app");
+function getCars(){
+
+return JSON.parse(
+localStorage.getItem("cars")
+) || [];
+
+}
 function money(value){
 
 return Number(value) 
@@ -12,13 +19,7 @@ return Number(value)
 const requests =
 JSON.parse(localStorage.getItem("requests")) || [];
 
-function getCars(){
 
-return JSON.parse(
-localStorage.getItem("cars")
-) || [];
-
-}
 const cars = getCars();
 
 
@@ -213,7 +214,7 @@ document.getElementById("requestType");
     const requests = JSON.parse(localStorage.getItem("requests")) || [];
 
 const request = {
-    iid: Date.now(),
+    id: Date.now(),
     date: new Date().toLocaleString("ru-RU"),
     client: inputs[0].value,
     phone: inputs[1].value,
@@ -289,18 +290,18 @@ function showRequests() {
 
     let requests = JSON.parse(localStorage.getItem("requests")) || [];
 
-    if(confirm("Удалить заявку?")){
+    if(!confirm("Удалить заявку?")){
+return;
+}
 
 requests.splice(index,1);
 
-}
+localStorage.setItem(
+"requests",
+JSON.stringify(requests)
+);
 
-    localStorage.setItem(
-        "requests",
-        JSON.stringify(requests)
-    );
-
-    showRequests();
+showRequests();
 }function changeStatus(index, status){
 
     let requests = JSON.parse(localStorage.getItem("requests")) || [];
@@ -367,8 +368,7 @@ ${request.manager || "Не назначен"}
     
     function showCars(){
 
-const cars =
-JSON.parse(localStorage.getItem("cars")) || [];
+const cars = getCars();
 
 
 app.innerHTML = `
@@ -408,17 +408,7 @@ cars.map((car,index)=>`
 
 
 <h3>
-if(
-!brand ||
-!model ||
-!document.getElementById("buy").value
-){
-
-alert("Заполните автомобиль");
-
-return;
-
-}
+${car.brand} ${car.model}
 </h3>
 
 
@@ -639,6 +629,7 @@ ${employeeOptions}
 
 
 function saveCar(){
+
 const brand =
 document.getElementById("brand").value;
 
@@ -647,15 +638,20 @@ const model =
 document.getElementById("model").value;
 
 
-if(!brand || !model){
+const buy =
+document.getElementById("buy").value;
 
-alert("Введите марку и модель");
+
+if(!brand || !model || !buy){
+
+alert("Заполните марку, модель и цену покупки");
 
 return;
 
 }
-const cars =
-JSON.parse(localStorage.getItem("cars")) || [];
+
+
+const cars = getCars();
 
 
 cars.push({
@@ -694,8 +690,7 @@ showCars();
 
 function openCar(index){
 
-const cars =
-JSON.parse(localStorage.getItem("cars")) || [];
+const cars = getCars();
 
 const car = cars[index];
 
@@ -932,7 +927,11 @@ totalBuy += Number(car.buy) || 0;
 
 totalCosts += Number(car.costs) || 0;
 
-totalSell += Number(car.sell) || 0;
+if(car.sell){
+
+totalSell += Number(car.sell);
+
+}
 
 });
 
