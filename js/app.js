@@ -21,9 +21,7 @@ document.querySelector(".boss").addEventListener("click", () => {
             <button onclick="showNewRequest()">Новая заявка</button>
             <button onclick="showRequests()">Все заявки</button>
             <button onclick="showCars()">🚗 Автомобили</button>
-            <button onclick="showFinance()">
-💰 Финансы
-</button>
+            <button onclick="showFinance()">💰 Финансы</button>
             <button>Сотрудники</button>
             <button>Haraba</button>
         </div>
