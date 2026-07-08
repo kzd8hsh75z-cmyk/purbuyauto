@@ -331,6 +331,12 @@ app.innerHTML=`
 
 <input id="year" placeholder="Год">
 
+<input id="mileage" placeholder="Пробег">
+
+<input id="vin" placeholder="VIN номер">
+
+<input id="photo" placeholder="Ссылка на фото">
+
 <input id="buy" placeholder="Цена покупки">
 
 <input id="costs" placeholder="Расходы">
@@ -376,6 +382,9 @@ cars.push({
 brand: document.getElementById("brand").value,
 model: document.getElementById("model").value,
 year: document.getElementById("year").value,
+mileage: document.getElementById("mileage").value,
+vin: document.getElementById("vin").value,
+photo: document.getElementById("photo").value,
 buy: Number(document.getElementById("buy").value),
 costs: Number(document.getElementById("costs").value),
 sell: Number(document.getElementById("sell").value),
