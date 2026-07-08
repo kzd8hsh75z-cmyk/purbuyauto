@@ -1,5 +1,10 @@
 const app = document.getElementById("app");
+function money(value){
 
+return Number(value || 0)
+.toLocaleString("ru-RU") + " ₽";
+
+}
 document.querySelector(".boss").addEventListener("click", () => {
     app.innerHTML = `
         <div class="dashboard">
@@ -243,22 +248,22 @@ cars.map((car,index)=>`
 </p>
 
 <p>
-<b>Покупка:</b> ${car.buy} ₽
+<b>Покупка:</b> ${money(car.buy)}
 </p>
 
 <p>
-<b>Расходы:</b> ${car.costs} ₽
+<b>Расходы:</b> ${money(car.costs)}
 </p>
 
 <p>
-<b>Продажа:</b> ${car.sell} ₽
+<b>Продажа:</b> ${money(car.sell)}
 </p>
 
 
 <p>
 <b>Прибыль:</b>
 
-${car.sell-car.buy-car.costs} ₽
+${money(car.sell-car.buy-car.costs)}
 </p>
 
 <hr>
