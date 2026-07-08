@@ -1,8 +1,9 @@
 const app = document.getElementById("app");
 function money(value){
 
-return Number(value || 0)
-.toLocaleString("ru-RU") + " ₽";
+return Number(value) 
+? Number(value).toLocaleString("ru-RU")+" ₽"
+: "0 ₽";
 
 }
     document.querySelector(".boss")?.addEventListener("click", () => {
@@ -11,9 +12,14 @@ return Number(value || 0)
 const requests =
 JSON.parse(localStorage.getItem("requests")) || [];
 
+function getCars(){
 
-const cars =
-JSON.parse(localStorage.getItem("cars")) || [];
+return JSON.parse(
+localStorage.getItem("cars")
+) || [];
+
+}
+const cars = getCars();
 
 
 let totalCosts = 0;
@@ -174,11 +180,13 @@ ${emp.name}
             <input placeholder="Пробег">
             <input placeholder="Желаемая цена">
 
-            <select>
-                <option>Выкуп</option>
-                <option>Автоподбор</option>
-                <option>Привоз из-за границы</option>
-            </select>
+            <select id="requestType">
+
+<option>Выкуп</option>
+<option>Автоподбор</option>
+<option>Привоз из-за границы</option>
+
+</select>
 
             <textarea placeholder="Комментарий"></textarea>
             <select id="requestManager"><option>Без ответственного</option>${employeeOptions}</select>
@@ -198,13 +206,14 @@ alert("Заполните имя и телефон");
 return;
 
 }
-    const typeSelect = document.querySelector(".dashboard select:not(#requestManager)");
+    const typeSelect =
+document.getElementById("requestType");
     const textarea = document.querySelector(".dashboard textarea");
 
     const requests = JSON.parse(localStorage.getItem("requests")) || [];
 
 const request = {
-    id: requests.length + 1,
+    iid: Date.now(),
     date: new Date().toLocaleString("ru-RU"),
     client: inputs[0].value,
     phone: inputs[1].value,
@@ -399,7 +408,17 @@ cars.map((car,index)=>`
 
 
 <h3>
-${car.brand || ""} ${car.model || ""}
+if(
+!brand ||
+!model ||
+!document.getElementById("buy").value
+){
+
+alert("Заполните автомобиль");
+
+return;
+
+}
 </h3>
 
 
@@ -414,6 +433,10 @@ ${car.year || "Не указан"}
 ${car.vin || "Не указан"}
 </p>
 
+<p>
+📅 Добавлен:
+${car.dateCreated || "—"}
+</p>
 
 <p>
 📍 Город:
@@ -1017,7 +1040,7 @@ ${money(car.sell)}
 
 <p>
 Прибыль:
-${car.sell ? money(car.sell-car.buy-car.costs) : "Не продан"}
+${car.sell ? money(car.sell - car.buy - car.costs) : "Не продан"}
 </p>
 
 
@@ -1194,11 +1217,12 @@ let employees =
 JSON.parse(localStorage.getItem("employees")) || [];
 
 
-if(confirm("Удалить сотрудника?")){
+if(!confirm("Удалить сотрудника?")){
+return;
+}
+
 
 employees.splice(index,1);
-
-}
 
 
 localStorage.setItem(
