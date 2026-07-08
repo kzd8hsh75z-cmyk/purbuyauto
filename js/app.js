@@ -24,10 +24,14 @@ cars.forEach(car=>{
 
 totalCosts += Number(car.costs) || 0;
 
+if(car.sell){
+
 totalProfit += 
 Number(car.sell) -
 Number(car.buy) -
 Number(car.costs);
+
+}
 
 });
 
@@ -136,8 +140,11 @@ document.querySelector(".worker")?.addEventListener("click", () => {
                 <div>📞 <b>5</b><span>Звонки</span></div>
                 <div>🚘 <b>3</b><span>Осмотры</span></div>
                 <div>✅ <b>2</b><span>Сделки</span></div>
-            <button onclick="showTasks()">📋 Мои задачи</button>
-            <button>Заявки</button>
+                </div>
+                <button onclick="showTasks()">📋 Мои задачи</button>
+            <button onclick="showRequests()">
+📋 Заявки
+</button>
             <button>Автоподбор</button>
             <button>Привоз</button>
         </div>
@@ -182,8 +189,16 @@ ${emp.name}
 }
 
 function saveRequest() {
-    const inputs = document.querySelectorAll(".dashboard input");
-    const select = document.querySelector(".dashboard select");
+   const inputs = document.querySelectorAll(".dashboard input");
+
+if(!inputs[0].value || !inputs[1].value){
+
+alert("Заполните имя и телефон");
+
+return;
+
+}
+    const typeSelect = document.querySelector(".dashboard select:not(#requestManager)");
     const textarea = document.querySelector(".dashboard textarea");
 
     const requests = JSON.parse(localStorage.getItem("requests")) || [];
@@ -197,11 +212,11 @@ const request = {
     year: inputs[3].value,
     mileage: inputs[4].value,
     price: inputs[5].value,
-    type: select.value,
+    type:typeSelect.value,
     comment: textarea.value,
 
 manager:
-document.getElementById("requestManager").value,
+document.getElementById("requestManager")?.value || "Без ответственного",
 
 status:"Новая"
 };
@@ -265,7 +280,11 @@ function showRequests() {
 
     let requests = JSON.parse(localStorage.getItem("requests")) || [];
 
-    requests.splice(index,1);
+    if(confirm("Удалить заявку?")){
+
+requests.splice(index,1);
+
+}
 
     localStorage.setItem(
         "requests",
@@ -337,8 +356,176 @@ ${request.manager || "Не назначен"}
 
     }
     
-    
-    function addCar(){
+    function showCars(){
+
+const cars =
+JSON.parse(localStorage.getItem("cars")) || [];
+
+
+app.innerHTML = `
+
+<div class="dashboard">
+
+
+<h1>
+🚗 Автомобили
+</h1>
+
+
+<p>
+Склад PurBuyAuto X
+</p>
+
+
+<button onclick="addCar()">
+➕ Добавить автомобиль
+</button>
+
+
+
+<div class="request-list">
+
+
+${
+cars.length === 0 ?
+
+"<p>Автомобилей пока нет</p>"
+
+:
+
+cars.map((car,index)=>`
+
+<div class="request-card">
+
+
+<h3>
+${car.brand || ""} ${car.model || ""}
+</h3>
+
+
+<p>
+📅 Год:
+${car.year || "Не указан"}
+</p>
+
+
+<p>
+🔢 VIN:
+${car.vin || "Не указан"}
+</p>
+
+
+<p>
+📍 Город:
+${car.city || "Не указан"}
+</p>
+
+
+<p>
+👤 Ответственный:
+${car.manager || "Не назначен"}
+</p>
+
+
+<p>
+💰 Покупка:
+${money(car.buy)}
+</p>
+
+
+<p>
+🔧 Расходы:
+${money(car.costs)}
+</p>
+
+
+<p>
+💵 Продажа:
+${money(car.sell)}
+</p>
+
+
+<p>
+📈 Прибыль:
+${
+car.sell
+?
+money(car.sell - car.buy - car.costs)
+:
+"Не продан"
+}
+</p>
+
+
+<p class="car-status">
+${car.status || "Без статуса"}
+</p>
+
+
+<hr>
+
+
+<h3>
+История расходов
+</h3>
+
+
+${
+(car.expenses || []).map(e=>`
+
+<div class="expense">
+
+🔧 ${e.name}
+
+<br>
+
+${money(e.sum)}
+
+<br>
+
+${e.date}
+
+</div>
+
+`).join("")
+}
+
+
+
+<button onclick="openCar(${index})">
+🚗 Открыть автомобиль
+</button>
+
+
+<button class="delete-btn" onclick="deleteCar(${index})">
+🗑 Удалить автомобиль
+</button>
+
+
+</div>
+
+
+`).join("")
+
+}
+
+
+
+</div>
+
+
+<button onclick="location.reload()">
+Назад
+</button>
+
+
+</div>
+
+`;
+
+}   
+
+function addCar(){
 
 const employees =
 JSON.parse(localStorage.getItem("employees")) || [];
@@ -429,7 +616,21 @@ ${employeeOptions}
 
 
 function saveCar(){
+const brand =
+document.getElementById("brand").value;
 
+
+const model =
+document.getElementById("model").value;
+
+
+if(!brand || !model){
+
+alert("Введите марку и модель");
+
+return;
+
+}
 const cars =
 JSON.parse(localStorage.getItem("cars")) || [];
 
@@ -555,7 +756,13 @@ ${money(car.sell)}
 
 <h2>
 Прибыль:
-${money(car.sell - car.buy - car.costs)}
+${
+car.sell
+?
+money(car.sell - car.buy - car.costs)
+:
+"Не продан"
+}
 </h2>
 
 
@@ -630,7 +837,6 @@ const sum =
 Number(document.getElementById("expense").value);
 
 
-
 if(!name || !sum){
 
 alert("Заполни расход и сумму");
@@ -640,7 +846,6 @@ return;
 }
 
 
-
 if(!cars[index].expenses){
 
 cars[index].expenses=[];
@@ -648,28 +853,23 @@ cars[index].expenses=[];
 }
 
 
-
 cars[index].expenses.push({
 
 name:name,
-
 sum:sum,
-
 date:new Date().toLocaleDateString()
 
 });
 
 
 cars[index].costs =
-Number(cars[index].costs) + sum;
-
+Number(cars[index].costs)+sum;
 
 
 localStorage.setItem(
 "cars",
 JSON.stringify(cars)
 );
-
 
 
 openCar(index);
@@ -715,7 +915,15 @@ totalSell += Number(car.sell) || 0;
 
 
 const profit =
-totalSell - totalBuy - totalCosts;
+cars
+.filter(car=>car.sell)
+.reduce(
+(sum,car)=>
+sum + Number(car.sell)
+- Number(car.buy)
+- Number(car.costs),
+0
+);
 
 
 
@@ -809,7 +1017,7 @@ ${money(car.sell)}
 
 <p>
 Прибыль:
-${money(car.sell-car.buy-car.costs)}
+${car.sell ? money(car.sell-car.buy-car.costs) : "Не продан"}
 </p>
 
 
@@ -951,7 +1159,13 @@ placeholder="Телефон">
 const employees =
 JSON.parse(localStorage.getItem("employees")) || [];
 
+if(!document.getElementById("empName").value){
 
+alert("Введите имя сотрудника");
+
+return;
+
+}
 employees.push({
 
 name:
@@ -980,7 +1194,11 @@ let employees =
 JSON.parse(localStorage.getItem("employees")) || [];
 
 
+if(confirm("Удалить сотрудника?")){
+
 employees.splice(index,1);
+
+}
 
 
 localStorage.setItem(
