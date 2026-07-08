@@ -137,4 +137,12 @@ textarea{
 
 .request-card p{
     margin:6px 0;
+}.request-card button{
+    margin-top:15px;
+    background:#c62828;
+    color:white;
+}
+
+.request-card button:hover{
+    opacity:.8;
 }

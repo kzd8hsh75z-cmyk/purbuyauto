@@ -107,15 +107,20 @@ showRequests();
 
             <div class="request-list">
                 ${requests.map((request, index) => `
-                    <div class="request-card">
-                        <h3>#${String(request.id || index + 1).padStart(4,"0")} — ${request.car || "Автомобиль не указан"}</h3>
-                        <p><b>Клиент:</b> ${request.client || "Не указан"}</p>
-                        <p><b>Телефон:</b> ${request.phone || "Не указан"}</p>
-                        <p><b>Тип:</b> ${request.type}</p>
-                        <p><b>Цена:</b> ${request.price || "Не указана"}</p>
-                        <p><b>Дата:</b> ${request.date || "08.07.2026"}</p>
-<p><b>Статус:</b> 🟡 ${request.status}</p>
-                    </div>
+                   <div class="request-card">
+    <h3>#${String(request.id || index + 1).padStart(4,"0")} — ${request.car || "Автомобиль не указан"}</h3>
+
+    <p><b>Клиент:</b> ${request.client || "Не указан"}</p>
+    <p><b>Телефон:</b> ${request.phone || "Не указан"}</p>
+    <p><b>Тип:</b> ${request.type}</p>
+    <p><b>Цена:</b> ${request.price || "Не указана"}</p>
+    <p><b>Дата:</b> ${request.date || "08.07.2026"}</p>
+    <p><b>Статус:</b> 🟡 ${request.status}</p>
+
+    <button onclick="deleteRequest(${index})">
+        🗑 Удалить
+    </button>
+</div>
                 `).join("")}
             </div>
 
@@ -123,4 +128,16 @@ showRequests();
             <button class="dark" onclick="location.reload()">Назад</button>
         </div>
     `;
+}function deleteRequest(index){
+
+    let requests = JSON.parse(localStorage.getItem("requests")) || [];
+
+    requests.splice(index,1);
+
+    localStorage.setItem(
+        "requests",
+        JSON.stringify(requests)
+    );
+
+    showRequests();
 }
