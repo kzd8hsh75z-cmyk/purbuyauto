@@ -14,6 +14,7 @@ document.querySelector(".boss").addEventListener("click", () => {
             </div>
 
             <button onclick="showNewRequest()">Новая заявка</button>
+            <button onclick="showRequests()">Все заявки</button>
             <button>Автомобили</button>
             <button>Финансы</button>
             <button>Сотрудники</button>
@@ -69,5 +70,51 @@ document.querySelector(".worker").addEventListener("click", () => {
 }
 
 function saveRequest() {
-    alert("Заявка сохранена. Скоро подключим базу данных.");
+    const inputs = document.querySelectorAll(".dashboard input");
+    const select = document.querySelector(".dashboard select");
+    const textarea = document.querySelector(".dashboard textarea");
+
+    const request = {
+        client: inputs[0].value,
+        phone: inputs[1].value,
+        car: inputs[2].value,
+        year: inputs[3].value,
+        mileage: inputs[4].value,
+        price: inputs[5].value,
+        type: select.value,
+        comment: textarea.value,
+        status: "Новая"
+    };
+
+    const requests = JSON.parse(localStorage.getItem("requests")) || [];
+    requests.push(request);
+
+    localStorage.setItem("requests", JSON.stringify(requests));
+
+    showRequests();
+}function showRequests() {
+    const requests = JSON.parse(localStorage.getItem("requests")) || [];
+
+    app.innerHTML = `
+        <div class="dashboard">
+            <h1>Все заявки</h1>
+            <p>Сохраненные заявки PurBuyAuto X</p>
+
+            <div class="request-list">
+                ${requests.map((request, index) => `
+                    <div class="request-card">
+                        <h3>${request.car || "Автомобиль не указан"}</h3>
+                        <p><b>Клиент:</b> ${request.client || "Не указан"}</p>
+                        <p><b>Телефон:</b> ${request.phone || "Не указан"}</p>
+                        <p><b>Тип:</b> ${request.type}</p>
+                        <p><b>Цена:</b> ${request.price || "Не указана"}</p>
+                        <p><b>Статус:</b> ${request.status}</p>
+                    </div>
+                `).join("")}
+            </div>
+
+            <button onclick="showNewRequest()">Новая заявка</button>
+            <button class="dark" onclick="location.reload()">Назад</button>
+        </div>
+    `;
 }

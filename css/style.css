@@ -116,4 +116,25 @@ textarea{
 textarea{
     min-height:120px;
     resize:none;
+}.request-list{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    margin:25px 0;
+}
+
+.request-card{
+    background:#111f33;
+    border-radius:18px;
+    padding:20px;
+    color:white;
+}
+
+.request-card h3{
+    font-size:24px;
+    margin-bottom:10px;
+}
+
+.request-card p{
+    margin:6px 0;
 }
