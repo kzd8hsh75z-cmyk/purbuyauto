@@ -16,6 +16,13 @@ localStorage.getItem("employees")
 
 
 }
+function getClients(){
+
+return JSON.parse(
+localStorage.getItem("clients")
+) || [];
+
+}
 function money(value){
 
 return Number(value) 
@@ -136,7 +143,9 @@ PurBuyAuto X
 <button onclick="showEmployees()">
 👥 Сотрудники
 </button>
-
+<button onclick="showClients()">
+👤 Клиенты
+</button>
 
 <button>
 Haraba
@@ -218,6 +227,54 @@ alert("Заполните имя и телефон");
 
 return;
 
+}const clients = getClients();
+
+
+let client = clients.find(
+c => c.phone === inputs[1].value
+);
+
+
+if(!client){
+
+client = {
+
+id: Date.now(),
+
+
+name: inputs[0].value,
+
+phone: inputs[1].value,
+
+cars: [],
+
+deals: [],
+
+history:[
+
+{
+
+type:"Создание",
+
+text:"Первичная заявка",
+
+date:new Date().toLocaleDateString()
+
+}
+
+]
+
+};
+
+
+clients.push(client);
+
+
+localStorage.setItem(
+"clients",
+JSON.stringify(clients)
+);
+
 }
     const typeSelect =
 document.getElementById("requestType");
@@ -227,6 +284,8 @@ document.getElementById("requestType");
 
 const request = {
     id: Date.now(),
+    clientId:
+    client.id,
     date: new Date().toLocaleString("ru-RU"),
     client: inputs[0].value,
     phone: inputs[1].value,
@@ -244,6 +303,23 @@ status:"Новая"
 };
 
     requests.push(request);
+    client.history.push({
+
+type:"Заявка",
+
+text:
+request.car || "Новый запрос",
+
+date:
+new Date().toLocaleDateString()
+
+});
+
+
+localStorage.setItem(
+"clients",
+JSON.stringify(clients)
+);
 
 localStorage.setItem(
 "requests",
@@ -1878,5 +1954,136 @@ localStorage.setItem(
 "cars",
 JSON.stringify(cars)
 );
+
+}function showClients(){
+
+const clients = getClients();
+
+
+app.innerHTML=`
+
+<div class="dashboard">
+
+<h1>
+👤 Клиенты PurBuyAuto X
+</h1>
+
+
+<button onclick="location.reload()">
+Назад
+</button>
+
+
+<div class="request-list">
+
+
+${
+clients.length===0
+
+?
+
+"<p>Клиентов пока нет</p>"
+
+:
+
+clients.map((client,index)=>`
+
+<div class="request-card">
+
+<h3>
+${client.name}
+</h3>
+
+
+<p>
+📞 ${client.phone}
+</p>
+
+
+<p>
+Заявок:
+${client.history ? client.history.length : 0}
+</p>
+
+
+<button onclick="openClientCard(${index})">
+Открыть
+</button>
+
+
+</div>
+
+
+`).join("")
+
+}
+
+
+</div>
+
+
+</div>
+
+`;
+
+}function openClientCard(index){
+
+const clients=getClients();
+
+const client=clients[index];
+
+
+app.innerHTML=`
+
+<div class="dashboard">
+
+
+<h1>
+👤 ${client.name}
+</h1>
+
+
+<p>
+📞 ${client.phone}
+</p>
+
+
+<hr>
+
+
+<h2>
+История
+</h2>
+
+
+${
+(client.history||[]).map(h=>`
+
+<p>
+
+📌 ${h.type}
+
+<br>
+
+${h.text}
+
+<br>
+
+${h.date}
+
+</p>
+
+`).join("")
+}
+
+
+<button onclick="showClients()">
+Назад
+</button>
+
+
+</div>
+
+`;
 
 }
