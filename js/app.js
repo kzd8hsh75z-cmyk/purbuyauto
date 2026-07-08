@@ -685,6 +685,15 @@ costs: Number(document.getElementById("costs").value),
 sell: Number(document.getElementById("sell").value),
 status: document.getElementById("status").value,
 expenses: [],
+
+history:[
+{
+type:"Создание",
+text:"Автомобиль добавлен в склад",
+date:new Date().toLocaleDateString()
+}
+],
+
 dateCreated:new Date().toLocaleDateString(),
 
 });
@@ -825,7 +834,32 @@ placeholder="Сумма">
 <h2>
 История расходов
 </h2>
+<hr>
 
+<h2>
+📜 История автомобиля
+</h2>
+
+
+${
+(car.history || []).map(h=>`
+
+<p>
+
+📌 ${h.type}
+
+<br>
+
+${h.text}
+
+<br>
+
+${h.date}
+
+</p>
+
+`).join("")
+}
 
 ${
 (car.expenses || []).map(e=>`
@@ -891,7 +925,24 @@ sum:sum,
 date:new Date().toLocaleDateString()
 
 });
+if(!cars[index].history){
 
+cars[index].history=[];
+
+}
+
+
+cars[index].history.push({
+
+type:"Расход",
+
+text:
+name+" "+money(sum),
+
+date:
+new Date().toLocaleDateString()
+
+});
 
 cars[index].costs =
 Number(cars[index].costs)+sum;
@@ -1791,7 +1842,32 @@ car.sell = deal.sellPrice;
 // меняем статус
 
 car.status = "⚫ Продан";
+if(!car.history){
 
+car.history=[];
+
+}
+
+
+if(
+!car.history.some(
+h=>h.type==="Продажа"
+)
+){
+
+car.history.push({
+
+type:"Продажа",
+
+text:
+"Продан за "+money(deal.sellPrice),
+
+date:
+new Date().toLocaleDateString()
+
+});
+
+}
 car.saleDate =
 new Date().toLocaleDateString();
 
