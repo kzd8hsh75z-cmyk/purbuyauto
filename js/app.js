@@ -303,8 +303,8 @@ ${car.status || "Без статуса"}
 🚗 Открыть автомобиль
 </button>
 
-<button onclick="deleteCar(${index})">
-🗑 Удалить
+<button class="delete-btn" onclick="deleteCar(${index})">
+🗑 Удалить автомобиль
 </button>
 
 </div>
@@ -618,7 +618,6 @@ JSON.stringify(cars)
 );
 
 showCars();
-
 }
 
 }

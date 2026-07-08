@@ -200,4 +200,11 @@ font-weight:bold;
 
 background:#16263d;
 
+}.delete-btn{
+    background:#222;
+    color:white;
+}
+
+.delete-btn:hover{
+    background:#ff3333;
 }
