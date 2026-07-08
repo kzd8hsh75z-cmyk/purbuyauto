@@ -1393,8 +1393,26 @@ app.innerHTML=`
 placeholder="Клиент">
 
 
-<input id="dealCar"
-placeholder="Автомобиль">
+<select id="dealCar">
+
+<option value="">
+Выберите автомобиль
+</option>
+
+${
+
+getCars().map((car,index)=>`
+
+<option value="${index}">
+${car.brand} ${car.model} | VIN ${car.vin || "нет"}
+
+</option>
+
+`).join("")
+
+}
+
+</select>
 
 
 <input id="dealBuy"
@@ -1487,15 +1505,32 @@ document.getElementById("dealClient").value;
 
 const car =
 document.getElementById("dealCar").value;
+if(car === ""){
 
-
-if(!client || !car || !buy){
-
-alert("Заполните клиента, автомобиль и цену покупки");
+alert("Выберите автомобиль");
 
 return;
 
 }
+const carIndex =
+Number(
+document.getElementById("dealCar").value
+);
+
+
+const selectedCar =
+getCars()[carIndex];
+
+
+if(!client || !buy){
+
+alert("Заполните клиента и цену покупки");
+
+return;
+
+}
+
+
 if(sell && sell < buy){
 
 alert("Цена продажи не может быть ниже покупки");
@@ -1512,7 +1547,14 @@ Date.now(),
 
 client: client,
 
-car: car,
+carId: carIndex,
+
+car:
+selectedCar
+?
+selectedCar.brand+" "+selectedCar.model
+:
+"Без автомобиля",
 
 buyPrice:
 buy,
@@ -1604,6 +1646,9 @@ Date.now(),
 
 requestId:
 request.id,
+
+carId:
+null,
 
 client:
 request.client,
