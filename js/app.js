@@ -5,27 +5,124 @@ return Number(value || 0)
 .toLocaleString("ru-RU") + " ₽";
 
 }
-document.querySelector(".boss").addEventListener("click", () => {
-    app.innerHTML = `
-        <div class="dashboard">
-            <h1>Панель руководителя</h1>
-            <p>PurBuyAuto X</p>
+    document.querySelector(".boss").addEventListener("click", () => {
 
-            <div class="stats">
-                <div>📥 <b>28</b><span>Заявки</span></div>
-                <div>🚗 <b>16</b><span>Выкуп</span></div>
-                <div>🌍 <b>8</b><span>Привоз</span></div>
-                <div>🤖 <b>AI</b><span>PurBuyAI</span></div>
-            </div>
 
-            <button onclick="showNewRequest()">Новая заявка</button>
-            <button onclick="showRequests()">Все заявки</button>
-            <button onclick="showCars()">🚗 Автомобили</button>
-            <button onclick="showFinance()">💰 Финансы</button>
-            <button>Сотрудники</button>
-            <button>Haraba</button>
-        </div>
-    `;
+const requests =
+JSON.parse(localStorage.getItem("requests")) || [];
+
+
+const cars =
+JSON.parse(localStorage.getItem("cars")) || [];
+
+
+let totalCosts = 0;
+let totalProfit = 0;
+
+
+cars.forEach(car=>{
+
+totalCosts += Number(car.costs) || 0;
+
+totalProfit += 
+Number(car.sell) -
+Number(car.buy) -
+Number(car.costs);
+
+});
+
+
+
+app.innerHTML = `
+
+<div class="dashboard">
+
+<h1>
+Панель руководителя
+</h1>
+
+<p>
+PurBuyAuto X
+</p>
+
+
+<div class="stats">
+
+
+<div>
+📥
+<b>${requests.length}</b>
+<span>
+Заявки
+</span>
+</div>
+
+
+<div>
+🚗
+<b>${cars.length}</b>
+<span>
+Автомобили
+</span>
+</div>
+
+
+<div>
+🔧
+<b>${money(totalCosts)}</b>
+<span>
+Расходы
+</span>
+</div>
+
+
+<div>
+💰
+<b>${money(totalProfit)}</b>
+<span>
+Прибыль
+</span>
+</div>
+
+
+</div>
+
+
+
+<button onclick="showNewRequest()">
+Новая заявка
+</button>
+
+
+<button onclick="showRequests()">
+Все заявки
+</button>
+
+
+<button onclick="showCars()">
+🚗 Автомобили
+</button>
+
+
+<button onclick="showFinance()">
+💰 Финансы
+</button>
+
+
+<button>
+Сотрудники
+</button>
+
+
+<button>
+Haraba
+</button>
+
+
+</div>
+
+`;
+
 });
 
 document.querySelector(".worker").addEventListener("click", () => {
