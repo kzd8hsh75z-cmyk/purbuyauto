@@ -145,6 +145,18 @@ document.querySelector(".worker").addEventListener("click", () => {
         </div>
     `;
 });function showNewRequest() {
+    const employees =
+JSON.parse(localStorage.getItem("employees")) || [];
+
+
+const employeeOptions =
+employees.map(emp=>`
+
+<option>
+${emp.name}
+</option>
+
+`).join("");
     app.innerHTML = `
         <div class="dashboard">
             <h1>Новая заявка</h1>
@@ -164,7 +176,7 @@ document.querySelector(".worker").addEventListener("click", () => {
             </select>
 
             <textarea placeholder="Комментарий"></textarea>
-
+            <select id="requestManager"><option>Без ответственного</option>${employeeOptions}</select>
             <button onclick="saveRequest()">Сохранить заявку</button>
             <button class="dark" onclick="location.reload()">Назад</button>
         </div>
@@ -189,7 +201,11 @@ const request = {
     price: inputs[5].value,
     type: select.value,
     comment: textarea.value,
-    status: "Новая"
+
+manager:
+document.getElementById("requestManager").value,
+
+status:"Новая"
 };
 
     requests.push(request);
@@ -288,6 +304,10 @@ showRequests();
         <p><b>Бюджет:</b> ${request.price}</p>
 
         <p><b>Тип:</b> ${request.type}</p>
+        <p>
+<b>Ответственный:</b>
+${request.manager || "Не назначен"}
+</p>
 
         <hr>
 
@@ -438,6 +458,18 @@ ${car.status || "Без статуса"}
 }function addCar(){
 
 app.innerHTML=`
+const employees =
+JSON.parse(localStorage.getItem("employees")) || [];
+
+
+const employeeOptions =
+employees.map(emp=>`
+
+<option>
+${emp.name}
+</option>
+
+`).join("");
 
 <div class="dashboard">
 
@@ -458,7 +490,15 @@ app.innerHTML=`
 
 <input id="dateBuy" placeholder="Дата покупки">
 
-<input id="manager" placeholder="Ответственный сотрудник">
+<select id="manager">
+
+<option>
+Без ответственного
+</option>
+
+${employeeOptions}
+
+</select>
 
 <input id="city" placeholder="Город">
 
