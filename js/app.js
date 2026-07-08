@@ -603,9 +603,6 @@ JSON.stringify(cars)
 openCar(index);
 
 }
-
-
-
 function deleteCar(index){
 
 let cars =
