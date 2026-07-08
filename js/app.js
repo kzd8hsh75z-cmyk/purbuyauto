@@ -287,9 +287,10 @@ ${
 
 `).join("")
 }
-<p>
-<b>Статус:</b>
-${car.status}
+<p class="car-status">
+
+${car.status || "Без статуса"}
+
 </p>
 
 <button onclick="openCar(${index})">
@@ -346,9 +347,11 @@ app.innerHTML=`
 
 <select id="status">
 
-<option>Куплен</option>
-<option>В поиске</option>
-<option>Продан</option>
+<option>🔎 В поиске</option>
+<option>🟡 Куплен</option>
+<option>🔵 На подготовке</option>
+<option>🟢 В продаже</option>
+<option>⚫ Продан</option>
 
 </select>
 

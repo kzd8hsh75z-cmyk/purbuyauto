@@ -174,4 +174,18 @@ margin:20px 0;
 
 object-fit:cover;
 
+}.car-status{
+
+background:#111f33;
+
+padding:10px 15px;
+
+border-radius:12px;
+
+display:inline-block;
+
+margin-top:10px;
+
+font-weight:bold;
+
 }
