@@ -1329,10 +1329,37 @@ ${deal.manager}
 </p>
 
 
-<p>
-Статус:
-${deal.status}
-</p>
+<select onchange="changeDealStatus(${index}, this.value)">
+
+<option ${deal.status==="Новая"?"selected":""}>
+Новая
+</option>
+
+<option ${deal.status==="Связались"?"selected":""}>
+Связались
+</option>
+
+<option ${deal.status==="Осмотр"?"selected":""}>
+Осмотр
+</option>
+
+<option ${deal.status==="Торг"?"selected":""}>
+Торг
+</option>
+
+<option ${deal.status==="Куплено"?"selected":""}>
+Куплено
+</option>
+
+<option ${deal.status==="Продано"?"selected":""}>
+Продано
+</option>
+
+<option ${deal.status==="Отказ"?"selected":""}>
+Отказ
+</option>
+
+</select>
 
 <p>
 📅 Дата:
@@ -1363,6 +1390,37 @@ ${deal.date}
 </div>
 
 `;
+
+}
+function changeDealStatus(index,status){
+
+const deals =
+JSON.parse(localStorage.getItem("deals")) || [];
+
+
+deals[index].status = status;
+
+deals[index].profit =
+Number(deals[index].sellPrice)
+-
+Number(deals[index].buyPrice);
+
+localStorage.setItem(
+"deals",
+JSON.stringify(deals)
+);
+
+
+if(status === "Продано"){
+
+updateCarAfterDeal(
+deals[index]
+);
+
+}
+
+
+showDeals();
 
 }
 function addDeal(){
@@ -1584,6 +1642,17 @@ JSON.stringify(deals)
 );
 
 
+const newDeal =
+deals[deals.length - 1];
+
+
+if(newDeal.status === "Продано"){
+
+updateCarAfterDeal(newDeal);
+
+}
+
+
 showDeals();
 
 }
@@ -1690,5 +1759,48 @@ alert("Сделка создана");
 
 
 showDeals();
+
+}
+function updateCarAfterDeal(deal){
+
+const cars = getCars();
+
+
+if(deal.carId === null || deal.carId === undefined){
+
+return;
+
+}
+
+
+const car = cars[deal.carId];
+
+
+if(!car){
+
+return;
+
+}
+
+
+// записываем продажу
+
+car.sell = deal.sellPrice;
+
+
+// меняем статус
+
+car.status = "⚫ Продан";
+
+car.saleDate =
+new Date().toLocaleDateString();
+
+
+// сохраняем
+
+localStorage.setItem(
+"cars",
+JSON.stringify(cars)
+);
 
 }
