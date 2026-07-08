@@ -577,4 +577,49 @@ JSON.stringify(cars)
 openCar(index);
 
 }
+}function openCar(index){
+
+const cars = JSON.parse(localStorage.getItem("cars")) || [];
+
+const car = cars[index];
+
+
+app.innerHTML = `
+
+<div class="dashboard">
+
+<h1>
+🚗 ${car.brand} ${car.model}
+</h1>
+
+<p>
+Год: ${car.year}
+</p>
+
+<p>
+Покупка: ${car.buy} ₽
+</p>
+
+<p>
+Расходы: ${car.costs} ₽
+</p>
+
+<p>
+Продажа: ${car.sell} ₽
+</p>
+
+<h2>
+Прибыль:
+${car.sell - car.buy - car.costs} ₽
+</h2>
+
+
+<button onclick="showCars()">
+Назад
+</button>
+
+</div>
+
+`;
+
 }
