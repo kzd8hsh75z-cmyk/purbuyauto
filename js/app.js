@@ -15,7 +15,7 @@ document.querySelector(".boss").addEventListener("click", () => {
 
             <button onclick="showNewRequest()">Новая заявка</button>
             <button onclick="showRequests()">Все заявки</button>
-            <button>Автомобили</button>
+            <button onclick="showCars()">🚗 Автомобили</button>
             <button>Финансы</button>
             <button>Сотрудники</button>
             <button>Haraba</button>
@@ -206,4 +206,161 @@ showRequests();
 
     </div>
     `;
+}function showCars(){
+
+const cars = JSON.parse(localStorage.getItem("cars")) || [];
+
+app.innerHTML = `
+
+<div class="dashboard">
+
+<h1>🚗 Автомобили</h1>
+
+<p>Склад PurBuyAuto X</p>
+
+
+<button onclick="addCar()">
+➕ Добавить автомобиль
+</button>
+
+
+<div class="request-list">
+
+${cars.length === 0 ?
+
+"<p>Автомобилей пока нет</p>"
+
+:
+
+cars.map((car,index)=>`
+
+<div class="request-card">
+
+<h3>${car.brand} ${car.model}</h3>
+
+<p>
+<b>Год:</b> ${car.year}
+</p>
+
+<p>
+<b>Покупка:</b> ${car.buy} ₽
+</p>
+
+<p>
+<b>Расходы:</b> ${car.costs} ₽
+</p>
+
+<p>
+<b>Продажа:</b> ${car.sell} ₽
+</p>
+
+
+<p>
+<b>Прибыль:</b>
+${car.sell-car.buy-car.costs} ₽
+</p>
+
+
+<p>
+<b>Статус:</b>
+${car.status}
+</p>
+
+
+</div>
+
+
+`).join("")
+
+}
+
+
+</div>
+
+
+<button onclick="location.reload()">
+Назад
+</button>
+
+
+</div>
+
+`;
+
+}function addCar(){
+
+app.innerHTML=`
+
+<div class="dashboard">
+
+<h1>➕ Новый автомобиль</h1>
+
+
+<input id="brand" placeholder="Марка">
+
+<input id="model" placeholder="Модель">
+
+<input id="year" placeholder="Год">
+
+<input id="buy" placeholder="Цена покупки">
+
+<input id="costs" placeholder="Расходы">
+
+<input id="sell" placeholder="Цена продажи">
+
+
+<select id="status">
+
+<option>Куплен</option>
+<option>В поиске</option>
+<option>Продан</option>
+
+</select>
+
+
+<button onclick="saveCar()">
+Сохранить
+</button>
+
+
+<button onclick="showCars()">
+Назад
+</button>
+
+
+</div>
+
+`;
+
+}
+
+
+
+function saveCar(){
+
+const cars =
+JSON.parse(localStorage.getItem("cars")) || [];
+
+
+cars.push({
+
+brand:brand.value,
+model:model.value,
+year:year.value,
+buy:Number(buy.value),
+costs:Number(costs.value),
+sell:Number(sell.value),
+status:status.value
+
+});
+
+
+localStorage.setItem(
+"cars",
+JSON.stringify(cars)
+);
+
+
+showCars();
+
 }
