@@ -348,6 +348,14 @@ app.innerHTML=`
 
 <input id="photo" placeholder="Ссылка на фото">
 
+<input id="dateBuy" placeholder="Дата покупки">
+
+<input id="manager" placeholder="Ответственный сотрудник">
+
+<input id="city" placeholder="Город">
+
+<textarea id="comment" placeholder="Комментарий по автомобилю"></textarea>
+
 <input id="buy" placeholder="Цена покупки">
 
 <input id="costs" placeholder="Расходы">
@@ -398,6 +406,10 @@ year: document.getElementById("year").value,
 mileage: document.getElementById("mileage").value,
 vin: document.getElementById("vin").value,
 photo: document.getElementById("photo").value,
+dateBuy: document.getElementById("dateBuy").value,
+manager: document.getElementById("manager").value,
+city: document.getElementById("city").value,
+comment: document.getElementById("comment").value,
 buy: Number(document.getElementById("buy").value),
 costs: Number(document.getElementById("costs").value),
 sell: Number(document.getElementById("sell").value),
@@ -448,7 +460,25 @@ ${car.mileage || "Не указан"} км
 🔢 VIN:
 ${car.vin || "Не указан"}
 </p>
+<p>
+📅 Дата покупки:
+${car.dateBuy || "Не указана"}
+</p>
 
+<p>
+👤 Ответственный:
+${car.manager || "Не назначен"}
+</p>
+
+<p>
+📍 Город:
+${car.city || "Не указан"}
+</p>
+
+<p>
+📝 Комментарий:
+${car.comment || "Нет"}
+</p>
 
 ${
 car.photo ?
