@@ -508,7 +508,7 @@ placeholder="Сумма">
 
 `;
 
-}ffunction addExpense(index){
+}function addExpense(index){
 
 let cars =
 JSON.parse(localStorage.getItem("cars")) || [];
