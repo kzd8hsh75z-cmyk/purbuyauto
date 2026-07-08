@@ -290,6 +290,9 @@ function showRequests() {
     <button onclick="openClient(${index})">
     👤 Клиент
 </button>
+<button onclick="createDealFromRequest(${index})">
+🤝 Создать сделку
+</button>
 </div>
                 `).join("")}
             </div>
@@ -1283,7 +1286,25 @@ ${deal.client}
 ${deal.car}
 </p>
 
+<p>
+📞 Телефон:
+${deal.phone || "Нет"}
+</p>
 
+<p>
+📋 Заявка:
+${deal.requestId || "Ручная сделка"}
+</p>
+<p>
+Тип:
+${
+deal.requestId 
+?
+"Из заявки"
+:
+"Создана вручную"
+}
+</p>
 <p>
 💰 Покупка:
 ${money(deal.buyPrice)}
@@ -1394,16 +1415,38 @@ ${employeeOptions}
 <select id="dealStatus">
 
 <option>
-В работе
+Новая
+</option>
+
+<option>
+Связались
+</option>
+
+<option>
+Осмотр
+</option>
+
+<option>
+Торг
+</option>
+
+<option>
+Куплено
+</option>
+
+<option>
+Продано
+</option>
+
+<option>
+Отказ
 </option>
 
 <option>
 Завершена
 </option>
 
-<option>
-Отказ
-</option>
+
 
 </select>
 
@@ -1516,6 +1559,68 @@ localStorage.setItem(
 "deals",
 JSON.stringify(deals)
 );
+
+
+showDeals();
+
+}function createDealFromRequest(index){
+
+const requests =
+JSON.parse(localStorage.getItem("requests")) || [];
+
+
+const request = requests[index];
+
+
+const deals =
+JSON.parse(localStorage.getItem("deals")) || [];
+
+
+deals.push({
+
+id:
+Date.now(),
+
+requestId:
+request.id,
+
+client:
+request.client,
+
+phone:
+request.phone,
+
+car:
+request.car,
+
+buyPrice:
+0,
+
+sellPrice:
+0,
+
+profit:
+0,
+
+manager:
+request.manager || "Без менеджера",
+
+status:
+"В работе",
+
+date:
+new Date().toLocaleDateString()
+
+});
+
+
+localStorage.setItem(
+"deals",
+JSON.stringify(deals)
+);
+
+
+alert("Сделка создана");
 
 
 showDeals();
