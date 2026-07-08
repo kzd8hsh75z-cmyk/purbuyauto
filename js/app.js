@@ -406,6 +406,31 @@ ${car.buy} ₽
 Расходы:
 ${car.costs} ₽
 </p>
+<h2>
+📋 История расходов
+</h2>
+
+
+${
+car.expenses ?
+
+car.expenses.map(e=>`
+
+<p>
+${e.date}
+<br>
+🔧 ${e.name}
+—
+${e.sum} ₽
+</p>
+
+`).join("")
+
+:
+
+"<p>Расходов пока нет</p>"
+
+}
 
 
 <p>
@@ -431,11 +456,13 @@ ${car.sell-car.buy-car.costs} ₽
 
 
 <input id="expenseName"
-placeholder="Например: ремонт">
+placeholder="Например: Ремонт">
 
 
-<input id="expenseSum"
+<input id="expense"
 placeholder="Сумма">
+
+
 
 
 <button onclick="addExpense(${index})">
@@ -461,19 +488,16 @@ placeholder="Сумма">
 let cars =
 JSON.parse(localStorage.getItem("cars")) || [];
 
-
-let sum =
-Number(expenseSum.value);
-
+let sum = Number(
+document.getElementById("expense").value
+);
 
 cars[index].costs += sum;
-
 
 localStorage.setItem(
 "cars",
 JSON.stringify(cars)
 );
-
 
 openCar(index);
 
@@ -630,20 +654,38 @@ placeholder="Например: ремонт">
 
 `;
 
-}function addExpense(index){
+function addExpense(index){
 
 const cars =
 JSON.parse(localStorage.getItem("cars")) || [];
+
+
+const name =
+document.getElementById("expenseName").value;
 
 
 const value =
 Number(document.getElementById("expense").value);
 
 
-if(!value){
-alert("Введите сумму расхода");
+if(!name || !value){
+alert("Заполни расход");
 return;
 }
+
+
+if(!cars[index].expenses){
+cars[index].expenses = [];
+}
+
+
+cars[index].expenses.push({
+
+name:name,
+sum:value,
+date:new Date().toLocaleDateString()
+
+});
 
 
 cars[index].costs =
@@ -654,6 +696,11 @@ localStorage.setItem(
 "cars",
 JSON.stringify(cars)
 );
+
+
+openCar(index);
+
+}
 
 
 openCar(index);
