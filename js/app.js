@@ -303,6 +303,10 @@ ${car.status || "Без статуса"}
 🚗 Открыть автомобиль
 </button>
 
+<button onclick="deleteCar(${index})">
+🗑 Удалить
+</button>
+
 </div>
 
 
@@ -597,5 +601,27 @@ JSON.stringify(cars)
 
 
 openCar(index);
+
+}
+
+
+
+function deleteCar(index){
+
+let cars =
+JSON.parse(localStorage.getItem("cars")) || [];
+
+if(confirm("Удалить этот автомобиль?")){
+
+cars.splice(index,1);
+
+localStorage.setItem(
+"cars",
+JSON.stringify(cars)
+);
+
+showCars();
+
+}
 
 }
