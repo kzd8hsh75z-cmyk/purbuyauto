@@ -373,13 +373,14 @@ JSON.parse(localStorage.getItem("cars")) || [];
 
 cars.push({
 
-brand:brand.value,
-model:model.value,
-year:year.value,
-buy:Number(buy.value),
-costs:Number(costs.value),
-sell:Number(sell.value),
-status:status.value
+brand: document.getElementById("brand").value,
+model: document.getElementById("model").value,
+year: document.getElementById("year").value,
+buy: Number(document.getElementById("buy").value),
+costs: Number(document.getElementById("costs").value),
+sell: Number(document.getElementById("sell").value),
+status: document.getElementById("status").value,
+expenses: []
 
 });
 
@@ -391,6 +392,11 @@ JSON.stringify(cars)
 
 
 showCars();
+
+}
+
+
+
 function openCar(index){
 
 const cars =
@@ -408,18 +414,7 @@ app.innerHTML = `
 </h1>
 
 
-<p>
-Год: ${car.year}
-</p>
-
-
-<hr>
-
-
-<h2>
-Финансы
-</h2>
-
+<p>Год: ${car.year}</p>
 
 <p>
 Покупка:
@@ -431,31 +426,6 @@ ${car.buy} ₽
 Расходы:
 ${car.costs} ₽
 </p>
-<h2>
-📋 История расходов
-</h2>
-
-
-${
-car.expenses ?
-
-car.expenses.map(e=>`
-
-<p>
-${e.date}
-<br>
-🔧 ${e.name}
-—
-${e.sum} ₽
-</p>
-
-`).join("")
-
-:
-
-"<p>Расходов пока нет</p>"
-
-}
 
 
 <p>
@@ -466,9 +436,7 @@ ${car.sell} ₽
 
 <h2>
 Прибыль:
-
-${car.sell-car.buy-car.costs} ₽
-
+${car.sell - car.buy - car.costs} ₽
 </h2>
 
 
@@ -476,7 +444,7 @@ ${car.sell-car.buy-car.costs} ₽
 
 
 <h2>
-Добавить расход
+➕ Добавить расход
 </h2>
 
 
@@ -488,138 +456,32 @@ placeholder="Например: Ремонт">
 placeholder="Сумма">
 
 
-
-
 <button onclick="addExpense(${index})">
-
 Добавить расход
-
 </button>
 
 
-<button onclick="showCars()">
-
-Назад
-
-</button>
-
-
-</div>
-
-`;
-
-}function addExpense(index){
-
-let cars =
-JSON.parse(localStorage.getItem("cars")) || [];
-
-
-let name =
-document.getElementById("expenseName").value;
-
-
-let sum =
-Number(document.getElementById("expense").value);
-
-
-if(!name || !sum){
-alert("Заполни расход и сумму");
-return;
-}
-
-
-if(!cars[index].expenses){
-cars[index].expenses=[];
-}
-
-
-cars[index].expenses.push({
-
-name:name,
-sum:sum,
-date:new Date().toLocaleDateString()
-
-});
-
-
-cars[index].costs += sum;
-
-
-localStorage.setItem(
-"cars",
-JSON.stringify(cars)
-);
-
-
-openCar(index);
-
-}function openCar(index){
-
-const cars = JSON.parse(localStorage.getItem("cars")) || [];
-
-const car = cars[index];
-
-
-app.innerHTML = `
-
-<div class="dashboard">
-
-<h1>
-🚗 ${car.brand} ${car.model}
-</h1>
-
-<p>
-Год выпуска: ${car.year}
-</p>
-
-
-<div class="request-card">
-
-<h2>💰 Финансы</h2>
-
-
-<p>
-Цена покупки:
-${car.buy} ₽
-</p>
-
-
-<p>
-Расходы:
-${car.costs} ₽
-</p>
-
-
-<p>
-Цена продажи:
-${car.sell} ₽
-</p>
+<hr>
 
 
 <h2>
-Прибыль:
-${car.sell - car.buy - car.costs} ₽
+История расходов
 </h2>
 
 
-</div>
+${
+(car.expenses || []).map(e=>`
 
+<p>
+🔧 ${e.name}
+<br>
+${e.sum} ₽
+<br>
+${e.date}
+</p>
 
-<div class="request-card">
-
-<h2>➕ Добавить расход</h2>
-
-
-<input id="expense"
-placeholder="Например: ремонт">
-
-
-<button onclick="addExpense(${index})">
-Добавить
-</button>
-
-
-</div>
+`).join("")
+}
 
 
 <button onclick="showCars()">
@@ -630,81 +492,10 @@ placeholder="Например: ремонт">
 </div>
 
 `;
-
-}function addExpense(index){
-
-const cars = JSON.parse(localStorage.getItem("cars")) || [];
-
-
-const value = Number(
-document.getElementById("expense").value
-);
-
-
-cars[index].costs += value;
-
-
-localStorage.setItem(
-"cars",
-JSON.stringify(cars)
-);
-
-
-openCar(index);
 
 }
-}function openCar(index){
-
-const cars = JSON.parse(localStorage.getItem("cars")) || [];
-
-const car = cars[index];
 
 
-app.innerHTML = `
-
-<div class="dashboard">
-
-<h1>
-🚗 ${car.brand} ${car.model}
-</h1>
-
-<p>
-Год: ${car.year}
-</p>
-
-<p>
-Покупка: ${car.buy} ₽
-</p>
-
-<p>
-Расходы: ${car.costs} ₽
-</p>
-
-<p>
-Продажа: ${car.sell} ₽
-</p>
-
-<h2>
-Прибыль:
-${car.sell - car.buy - car.costs} ₽
-<h2>➕ Добавить расход</h2>
-
-<input id="expense"
-placeholder="Например: ремонт">
-
-
-<button onclick="addExpense(${index})">
-Добавить расход
-</button>
-
-
-<button onclick="showCars()">
-Назад
-</button>
-
-</div>
-
-`;
 
 function addExpense(index){
 
@@ -716,32 +507,43 @@ const name =
 document.getElementById("expenseName").value;
 
 
-const value =
+const sum =
 Number(document.getElementById("expense").value);
 
 
-if(!name || !value){
-alert("Заполни расход");
+
+if(!name || !sum){
+
+alert("Заполни расход и сумму");
+
 return;
+
 }
+
 
 
 if(!cars[index].expenses){
-cars[index].expenses = [];
+
+cars[index].expenses=[];
+
 }
+
 
 
 cars[index].expenses.push({
 
 name:name,
-sum:value,
+
+sum:sum,
+
 date:new Date().toLocaleDateString()
 
 });
 
 
 cars[index].costs =
-Number(cars[index].costs) + value;
+Number(cars[index].costs) + sum;
+
 
 
 localStorage.setItem(
@@ -749,10 +551,6 @@ localStorage.setItem(
 JSON.stringify(cars)
 );
 
-
-openCar(index);
-
-}
 
 
 openCar(index);
