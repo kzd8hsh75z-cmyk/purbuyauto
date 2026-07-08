@@ -329,124 +329,85 @@ ${request.manager || "Не назначен"}
 
     </div>
     `;
-}function showCars(){
+function addCar(){
 
-const cars = JSON.parse(localStorage.getItem("cars")) || [];
+const employees =
+JSON.parse(localStorage.getItem("employees")) || [];
 
-app.innerHTML = `
+
+const employeeOptions =
+employees.map(emp=>`
+
+<option>
+${emp.name}
+</option>
+
+`).join("");
+
+
+app.innerHTML=`
 
 <div class="dashboard">
 
-<h1>🚗 Автомобили</h1>
-
-<p>Склад PurBuyAuto X</p>
+<h1>➕ Новый автомобиль</h1>
 
 
-<button onclick="addCar()">
-➕ Добавить автомобиль
+<input id="brand" placeholder="Марка">
+
+<input id="model" placeholder="Модель">
+
+<input id="year" placeholder="Год">
+
+<input id="mileage" placeholder="Пробег">
+
+<input id="vin" placeholder="VIN номер">
+
+<input id="photo" placeholder="Ссылка на фото">
+
+<input id="dateBuy" placeholder="Дата покупки">
+
+
+<select id="manager">
+
+<option>
+Без ответственного
+</option>
+
+${employeeOptions}
+
+</select>
+
+
+<input id="city" placeholder="Город">
+
+
+<textarea id="comment" placeholder="Комментарий по автомобилю"></textarea>
+
+
+<input id="buy" placeholder="Цена покупки">
+
+<input id="costs" placeholder="Расходы">
+
+<input id="sell" placeholder="Цена продажи">
+
+
+<select id="status">
+
+<option>🔎 В поиске</option>
+<option>🟡 Куплен</option>
+<option>🔵 На подготовке</option>
+<option>🟢 В продаже</option>
+<option>⚫ Продан</option>
+
+</select>
+
+
+<button onclick="saveCar()">
+Сохранить
 </button>
 
 
-<div class="request-list">
-
-${cars.length === 0 ?
-
-"<p>Автомобилей пока нет</p>"
-
-:
-
-cars.map((car,index)=>`
-
-<div class="request-card">
-
-<h3>${car.brand} ${car.model}</h3>
-
-<p>
-<b>Год:</b> ${car.year}
-</p>
-<p>
-<b>VIN:</b> ${car.vin || "Не указан"}
-</p>
-
-<p>
-<b>Город:</b> ${car.city || "Не указан"}
-</p>
-
-<p>
-<b>Ответственный:</b> ${car.manager || "Не назначен"}
-</p>
-
-<p>
-<b>Покупка:</b> ${money(car.buy)}
-</p>
-
-<p>
-<b>Расходы:</b> ${money(car.costs)}
-</p>
-
-<p>
-<b>Продажа:</b> ${money(car.sell)}
-</p>
-
-
-<p>
-<b>Прибыль:</b>
-
-${money(car.sell-car.buy-car.costs)}
-</p>
-
-<hr>
-
-<h3>
-История расходов
-</h3>
-
-
-${
-(car.expenses || []).map(e=>`
-
-<div class="expense">
-
-<b>${e.name}</b>
-
-<br>
-
-Сумма: ${money(e.sum)}
-
-<br>
-
-Дата: ${e.date}
-
-</div>
-
-`).join("")
-}
-<p class="car-status">
-
-${car.status || "Без статуса"}
-
-</p>
-
-<button onclick="openCar(${index})">
-🚗 Открыть автомобиль
-</button>
-
-<button class="delete-btn" onclick="deleteCar(${index})">
-🗑 Удалить автомобиль
-</button>
-
-</div>
-
-
-`).join("")
-
-}
-
-
-</div>
-
-
-<button onclick="location.reload()">
+<button onclick="showCars()">
 Назад
 </button>
 
@@ -454,6 +415,8 @@ ${car.status || "Без статуса"}
 </div>
 
 `;
+
+}
 
 }function addCar(){
 
