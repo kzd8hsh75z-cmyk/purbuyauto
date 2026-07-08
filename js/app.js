@@ -74,21 +74,26 @@ function saveRequest() {
     const select = document.querySelector(".dashboard select");
     const textarea = document.querySelector(".dashboard textarea");
 
-    const request = {
-        client: inputs[0].value,
-        phone: inputs[1].value,
-        car: inputs[2].value,
-        year: inputs[3].value,
-        mileage: inputs[4].value,
-        price: inputs[5].value,
-        type: select.value,
-        comment: textarea.value,
-        status: "Новая"
-    };
-
     const requests = JSON.parse(localStorage.getItem("requests")) || [];
-    requests.push(request);
 
+const request = {
+    id: requests.length + 1,
+    date: new Date().toLocaleString("ru-RU"),
+    client: inputs[0].value,
+    phone: inputs[1].value,
+    car: inputs[2].value,
+    year: inputs[3].value,
+    mileage: inputs[4].value,
+    price: inputs[5].value,
+    type: select.value,
+    comment: textarea.value,
+    status: "Новая"
+};
+
+    requests.push(request);
+localStorage.setItem("requests", JSON.stringify(requests));
+
+showRequests();
     localStorage.setItem("requests", JSON.stringify(requests));
 
     showRequests();
@@ -103,12 +108,13 @@ function saveRequest() {
             <div class="request-list">
                 ${requests.map((request, index) => `
                     <div class="request-card">
-                        <h3>${request.car || "Автомобиль не указан"}</h3>
+                        <h3>#${String(request.id).padStart(4,"0")} — ${request.car || "Автомобиль не указан"}</h3>
                         <p><b>Клиент:</b> ${request.client || "Не указан"}</p>
                         <p><b>Телефон:</b> ${request.phone || "Не указан"}</p>
                         <p><b>Тип:</b> ${request.type}</p>
                         <p><b>Цена:</b> ${request.price || "Не указана"}</p>
-                        <p><b>Статус:</b> ${request.status}</p>
+                        <p><b>Дата:</b> ${request.date}</p>
+<p><b>Статус:</b> 🟡 ${request.status}</p>
                     </div>
                 `).join("")}
             </div>
