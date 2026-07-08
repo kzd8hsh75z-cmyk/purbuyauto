@@ -96,12 +96,13 @@ const request = {
 };
 
     requests.push(request);
-localStorage.setItem("requests", JSON.stringify(requests));
+
+localStorage.setItem(
+"requests",
+JSON.stringify(requests)
+);
 
 showRequests();
-    localStorage.setItem("requests", JSON.stringify(requests));
-
-    showRequests();
 }function showRequests() {
     const requests = JSON.parse(localStorage.getItem("requests")) || [];
 
@@ -282,7 +283,7 @@ ${
 
 <br>
 
-Сумма: ${e.sum}
+Сумма: ${money(e.sum)}
 
 <br>
 
@@ -397,7 +398,8 @@ buy: Number(document.getElementById("buy").value),
 costs: Number(document.getElementById("costs").value),
 sell: Number(document.getElementById("sell").value),
 status: document.getElementById("status").value,
-expenses: []
+expenses: [],
+date:new Date().toLocaleDateString(),
 
 });
 
@@ -459,25 +461,25 @@ car.photo ?
 
 <p>
 Покупка:
-${car.buy} ₽
+${money(car.buy)}
 </p>
 
 
 <p>
 Расходы:
-${car.costs} ₽
+${money(car.costs)}
 </p>
 
 
 <p>
 Продажа:
-${car.sell} ₽
+${money(car.sell)}
 </p>
 
 
 <h2>
 Прибыль:
-${car.sell - car.buy - car.costs} ₽
+${money(car.sell - car.buy - car.costs)}
 </h2>
 
 
@@ -516,7 +518,7 @@ ${
 <p>
 🔧 ${e.name}
 <br>
-${e.sum} ₽
+${money(e.sum)}
 <br>
 ${e.date}
 </p>
