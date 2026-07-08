@@ -303,6 +303,11 @@ status:"Новая"
 };
 
     requests.push(request);
+    if(!client.history){
+
+client.history=[];
+
+}
     client.history.push({
 
 type:"Заявка",
@@ -2054,7 +2059,9 @@ app.innerHTML=`
 <h2>
 История
 </h2>
-
+<button onclick="addClientEvent(${index})">
+➕ Добавить событие
+</button>
 
 ${
 (client.history||[]).map(h=>`
@@ -2085,5 +2092,112 @@ ${h.date}
 </div>
 
 `;
+
+}function addClientEvent(index){
+
+const clients = getClients();
+
+const client = clients[index];
+
+
+app.innerHTML=`
+
+<div class="dashboard">
+
+<h1>
+➕ Новое событие
+</h1>
+
+
+<select id="eventType">
+
+<option>
+☎ Звонок
+</option>
+
+<option>
+💬 Сообщение
+</option>
+
+<option>
+🚗 Осмотр
+</option>
+
+<option>
+🤝 Встреча
+</option>
+
+<option>
+📝 Комментарий
+</option>
+
+</select>
+
+
+<textarea id="eventText"
+placeholder="Комментарий"></textarea>
+
+
+<button onclick="saveClientEvent(${index})">
+Сохранить
+</button>
+
+
+<button onclick="openClientCard(${index})">
+Назад
+</button>
+
+
+</div>
+
+`;
+
+}function saveClientEvent(index){
+
+const clients = getClients();
+
+
+const type =
+document.getElementById("eventType").value;
+
+
+const text =
+document.getElementById("eventText").value;
+
+
+if(!text){
+
+alert("Введите комментарий");
+
+return;
+
+}
+
+
+if(!clients[index].history){
+
+clients[index].history=[];
+
+}
+
+
+clients[index].history.push({
+
+type:type,
+
+text:text,
+
+date:new Date().toLocaleDateString()
+
+});
+
+
+localStorage.setItem(
+"clients",
+JSON.stringify(clients)
+);
+
+
+openClientCard(index);
 
 }
