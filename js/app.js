@@ -247,6 +247,17 @@ cars.map((car,index)=>`
 <p>
 <b>Год:</b> ${car.year}
 </p>
+<p>
+<b>VIN:</b> ${car.vin || "Не указан"}
+</p>
+
+<p>
+<b>Город:</b> ${car.city || "Не указан"}
+</p>
+
+<p>
+<b>Ответственный:</b> ${car.manager || "Не назначен"}
+</p>
 
 <p>
 <b>Покупка:</b> ${money(car.buy)}
@@ -415,7 +426,7 @@ costs: Number(document.getElementById("costs").value),
 sell: Number(document.getElementById("sell").value),
 status: document.getElementById("status").value,
 expenses: [],
-date:new Date().toLocaleDateString(),
+dateCreated:new Date().toLocaleDateString(),
 
 });
 
@@ -460,9 +471,14 @@ ${car.mileage || "Не указан"} км
 🔢 VIN:
 ${car.vin || "Не указан"}
 </p>
+
 <p>
 📅 Дата покупки:
 ${car.dateBuy || "Не указана"}
+</p>
+
+📌 Добавлен в систему:
+${car.dateCreated || "Сегодня"}
 </p>
 
 <p>
