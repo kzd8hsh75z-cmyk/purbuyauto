@@ -116,6 +116,12 @@ showRequests();
     <p><b>Цена:</b> ${request.price || "Не указана"}</p>
     <p><b>Дата:</b> ${request.date || "08.07.2026"}</p>
     <p><b>Статус:</b> 🟡 ${request.status}</p>
+    <select onchange="changeStatus(${index}, this.value)">
+    <option ${request.status==="Новая"?"selected":""}>Новая</option>
+    <option ${request.status==="В работе"?"selected":""}>В работе</option>
+    <option ${request.status==="Завершена"?"selected":""}>Завершена</option>
+    <option ${request.status==="Отказ"?"selected":""}>Отказ</option>
+</select>
 
     <button onclick="deleteRequest(${index})">
         🗑 Удалить
@@ -133,6 +139,18 @@ showRequests();
     let requests = JSON.parse(localStorage.getItem("requests")) || [];
 
     requests.splice(index,1);
+
+    localStorage.setItem(
+        "requests",
+        JSON.stringify(requests)
+    );
+
+    showRequests();
+}function changeStatus(index, status){
+
+    let requests = JSON.parse(localStorage.getItem("requests")) || [];
+
+    requests[index].status = status;
 
     localStorage.setItem(
         "requests",

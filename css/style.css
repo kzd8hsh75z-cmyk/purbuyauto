@@ -145,4 +145,11 @@ textarea{
 
 .request-card button:hover{
     opacity:.8;
+}.request-card select{
+    margin-top:15px;
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+    border:none;
+    font-size:16px;
 }
