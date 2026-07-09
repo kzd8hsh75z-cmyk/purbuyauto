@@ -32,6 +32,13 @@ localStorage.getItem("clients")
 ) || [];
 
 }
+function getRequests(){
+
+return JSON.parse(
+localStorage.getItem("requests")
+) || [];
+}
+
 function money(value){
 
 return Number(value) 
@@ -278,13 +285,8 @@ date:new Date().toLocaleDateString()
 
 clients.push(client);
 
-
-localStorage.setItem(
-"clients",
-JSON.stringify(clients)
-);
-
 }
+
     const typeSelect =
 document.getElementById("requestType");
     const textarea = document.querySelector(".dashboard textarea");
@@ -312,6 +314,12 @@ status:"Новая"
 };
 
     requests.push(request);
+    
+    localStorage.setItem(
+"requests",
+JSON.stringify(requests)
+);
+
     if(!client.history){
 
 client.history=[];
@@ -335,23 +343,46 @@ localStorage.setItem(
 JSON.stringify(clients)
 );
 
+
+
+createTaskFromRequest(request);
+client.history.push({
+
+type:"Автоматизация",
+
+text:
+"Создана задача менеджеру по новой заявке",
+
+date:
+new Date().toLocaleDateString()
+
+});
+
+
 localStorage.setItem(
-"requests",
-JSON.stringify(requests)
+"clients",
+JSON.stringify(clients)
 );
 
 
+localStorage.setItem(
+"clients",
+JSON.stringify(clients)
+);
+
 alert("Заявка сохранена");
+
 
 showRequests();
 
 }
 
-
 function showRequests() {
-    const requests = JSON.parse(localStorage.getItem("requests")) || [];
 
-    app.innerHTML = `
+const requests = getRequests();
+
+
+app.innerHTML = `
         <div class="dashboard">
             <h1>Все заявки</h1>
             <p>Сохраненные заявки PurBuyAuto X</p>
@@ -390,8 +421,11 @@ function showRequests() {
             <button onclick="showNewRequest()">Новая заявка</button>
             <button class="dark" onclick="location.reload()">Назад</button>
         </div>
-    `;
-}function deleteRequest(index){
+        `;
+               
+}
+
+function deleteRequest(index){
 
     let requests = JSON.parse(localStorage.getItem("requests")) || [];
 
@@ -407,6 +441,7 @@ JSON.stringify(requests)
 );
 
 showRequests();
+}
 function changeStatus(index, status){
 
 let requests =
@@ -430,7 +465,7 @@ JSON.stringify(requests)
 showRequests();
 
 }
-}function openClient(index){
+function openClient(index){
 
     const requests = JSON.parse(localStorage.getItem("requests")) || [];
 
@@ -2275,7 +2310,10 @@ ${task.employee}
 <p>
 📅 ${task.date}
 </p>
-
+<p>
+Тип:
+${task.type || "Обычная задача"}
+</p>
 
 <p>
 Статус:
@@ -2333,6 +2371,10 @@ placeholder="Клиент">
 
 
 <select id="taskEmployee">
+
+<option>
+Без сотрудника
+</option>
 
 ${employees.map(e=>`
 
@@ -2458,17 +2500,67 @@ return;
 
 openClientCard(clientIndex);
 
-}function deleteTask(index){
+}
+
+function deleteTask(index){
 
 const tasks = getTasks();
 
+
+if(!confirm("Удалить задачу?")){
+return;
+}
+
+
 tasks.splice(index,1);
+
 
 localStorage.setItem(
 "tasks",
 JSON.stringify(tasks)
 );
 
+
 showTasks();
+
+}
+
+function createTaskFromRequest(request){
+
+const tasks = getTasks();
+
+
+tasks.push({
+
+id: Date.now(),
+
+title:
+"Позвонить клиенту: " + request.client,
+
+client:
+request.client,
+
+employee:
+request.manager || "Без ответственного",
+
+date:
+new Date().toLocaleDateString(),
+
+type:
+"Новая заявка",
+
+requestId:
+request.id,
+
+status:
+"Новая"
+
+});
+
+
+localStorage.setItem(
+"tasks",
+JSON.stringify(tasks)
+);
 
 }
